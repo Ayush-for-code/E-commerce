@@ -1,0 +1,170 @@
+body {
+  font-family: Arial, sans-serif;
+}
+*{
+  padding:0;
+  margin:0;
+  box-sizing: border-box;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background: #222;
+}
+
+.navbar a {
+   display: flex;
+  align-items: center;
+  color: white;
+  font-weight: 600;
+  gap:2px;
+  margin-left: 15px;
+  text-decoration: none;
+  transition:  0.1s ease;
+}
+.nav-links{
+  display: flex;
+  align-items: center;
+ 
+}
+
+.hero {
+  padding: 40px;
+  background: #f4f4f4;
+  text-align: center;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+}
+
+.filter button{
+ padding:5px;
+ margin:8px;
+ font-weight: 600;
+ border-radius: 5px;
+ outline:none;
+}
+.navbar a:hover{
+  scale: 1.2;
+
+}
+.search-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap:16px;
+}
+.search{
+  margin-right:80px;
+  padding:6px 14px;
+  border-radius: 5px;
+}
+.navbar h2{
+  color:bisque;
+}
+.items{
+  display: flex;
+  justify-content: center; 
+  
+}
+.product-container{
+  box-shadow: 6px 6px 3px rgba(147, 147, 147, 0.351),inset 3px 3px 3px rgba(231, 228, 228, 0.532);
+  border-radius: 24px;
+  padding:12px 18px;
+  display: flex;
+  flex-direction: column;
+  margin:20px;
+  flex-wrap: wrap;
+  min-width: 400px;
+  height: 300px;
+  justify-content: center;
+  align-items: center;
+}
+.product-image{
+ 
+  box-shadow: 6px 6px 3px rgba(147, 147, 147, 0.351),inset 3px 3px 3px rgba(231, 228, 228, 0.532);
+  min-width: 90%;
+  min-height: 140px;
+}
+.productName{
+ padding:8px 16px;
+}
+span{
+  display: flex;
+  align-items: center;
+  padding:4px 16px;
+}
+span svg{
+  fill:black
+}
+.discription{
+  padding:0 16px;
+}
+
+/* styling for itmes container  */
+.items{
+
+  display: flex;
+  padding:20px;
+  flex-wrap: wrap;
+}
+.info{
+
+  display:flex;
+  width: 100%;
+  flex-direction: column;
+  align-items:start ;
+}
+
+.setting svg{
+  cursor:pointer;
+  fill:grey;
+  
+}
+.settings-menu {
+  position: fixed;
+  top: 0;
+  left:-300px;
+  width: 300px;
+  height: 100vh;
+  background: #222;;
+  transition: left 0.3s ease;
+  z-index: 1001;
+}
+
+.settings-menu.open {
+ left:0;
+}
+.settings-menu .close{
+  margin:12px;
+  cursor: pointer;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+.setting-options{
+ 
+  width: 100%;
+  height: 100%;
+}
+.setting-options h3{
+  padding:12px 18px;
+
+}
+.setting-options h3:hover{
+  cursor: pointer;
+  background-color: #8e8d8d;
+}
