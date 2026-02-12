@@ -1,39 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProduct } from "../state/reducers/productSlice";
 import Product from "./Product";
-import axios from "axios";
 
 const Items = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
-  const handleProduct = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/api/product/get");
-
-      console.log(res.data);
-      setProducts(res.data.products);
-
-    } catch (error) {
-      console.error(
-        "There is an error fetching data:",
-        error.response?.data || error.message
-      );
-    }
-  };
+  const { product, loading, error, query, category } = useSelector(
+    (state) => state.product
+  );
 
   useEffect(() => {
-    handleProduct();
-  }, []);
+    dispatch(fetchProduct({ query, category }));
+  }, [dispatch, query, category]); // 🔑 re-fetch on search change
+
+  if (loading) return <h2>Loading products...</h2>;
+  if (error) return <h2>Error: {error}</h2>;
 
   return (
     <div className="items">
-      {products.map((product) => (
+      {Array.isArray(product) &&product.map((item) => (
         <Product
-          key={product._id}
-          name={product.name}
-          price={product.price}
-          description={product.description}
-          category={product.category}
-          image={product.image}
+          key={item._id}
+          name={item.name}
+          price={item.price}
+          description={item.description}
+          category={item.category}
+          image={item.image}
         />
       ))}
     </div>

@@ -65,9 +65,18 @@ body {
   gap:16px;
 }
 .search{
-  margin-right:80px;
+  margin-right:4px;
   padding:6px 14px;
   border-radius: 5px;
+}
+.filter-btn{
+  cursor: pointer;
+}
+.search-btn{
+  padding:6px 14px;
+  border-radius: 5px;
+    cursor: pointer;
+  
 }
 .navbar h2{
   color:bisque;
@@ -167,4 +176,46 @@ span svg{
 .setting-options h3:hover{
   cursor: pointer;
   background-color: #8e8d8d;
+}
+.addresses{
+  border:1px solid black;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+align-items: center;
+}
+.address-form{
+
+   border:1px solid black;
+  display:flex;
+  align-items: center;
+  flex-direction: column;
+ width:40%;
+
+}
+.address-form input{
+  max-width: 60%;
+  margin: 5px;
+  padding:12px 18px;
+}
+.address-form select{
+  max-width: 60%;
+  margin:5px;
+  padding:12px 18px;
+}
+.add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  max-width: 70px;
+  max-height: 90px;
+  border-radius: 12px;
+  min-width: 70px;
+  min-height: 90px;
+  background-color: #c4bdbd;
+  svg{
+    fill:#222;
+    scale:1.5;
+  }
 }
