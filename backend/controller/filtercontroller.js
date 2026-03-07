@@ -6,6 +6,7 @@ try{
 const {search,sort,maxPrice,minPrice,category} = req.query;
 let query = {};
 if(search){
+    
     query.name = {
         $regex:search,
         $options:"i"

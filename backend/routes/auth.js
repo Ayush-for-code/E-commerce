@@ -56,6 +56,7 @@ async (req, res) => {
 });
 
 // 2 route for checking for login
+let success = false;
 router.post("/login",[
     body("email","please enter valid email").isEmail(),
     body("password","please enter vaild password").isLength({min:5})
@@ -63,18 +64,18 @@ router.post("/login",[
     //validate fields
  const errors = validationResult(req);
  if(!errors.isEmpty()){
-    res.status(400).json({sucess:false , errors: errors.array()});
+   return res.status(400).json({sucess:false , errors: errors.array()});
  } 
  //checking user email and password if it does not match from database by deconstruction method
  const {email,password} = req.body;
  try{
     const user = await User.findOne({email});
  if(!user){
-    res.status(400).json("please login with right creadinals");
+   return res.status(400).json("please login with right creadinals");
  }
- const passwordcompare = bcrypt.compare(password,user.password);
+ const passwordcompare = await bcrypt.compare(password,user.password);
  if(!passwordcompare){
-    res.status(400).json("please login with right creadinals");
+   return res.status(400).json("please login with right creadinals");
  }
  // verifying user from database through id
  const payload = {
@@ -85,7 +86,7 @@ router.post("/login",[
  // passing authtoken to the user
   const authtoken = jwt.sign(payload,JWT_SECRET);
   success = true;
-  res.josn({success,authtoken});
+  res.json({success,authtoken});
  }
  catch(err){
     console.log("there is an error",error.message);

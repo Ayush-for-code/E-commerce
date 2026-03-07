@@ -32,10 +32,13 @@ exports.addAddress = async (req, res) => {
       addressDoc.addresses.push(newAddress);
       await addressDoc.save();
     }
+    const addedAddress =
+  addressDoc.addresses[addressDoc.addresses.length - 1];
 
     res.status(201).json({
       success: true,
-      message: "Address added successfully"
+      message: "Address added successfully",
+      address:  addedAddress
     });
 
   } catch (err) {
@@ -185,7 +188,7 @@ if(!address){
 
  address.isDefault = true;
  await addressDoc.save();
- res.status(200).json({success:true,message:"successfully set your address default"});
+ res.status(200).json({success:true,message:"successfully set your address default",addresses:addressDoc.addresses});
 }
 catch(err){
  res.status(500).json({success:false,message:"internal server error "});
@@ -231,7 +234,8 @@ exports.removeDefaultAddress = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Default address removed successfully"
+      message: "Default address removed successfully",
+      addresses:addressDoc.addresses
     });
 
   } catch (err) {

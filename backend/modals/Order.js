@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
 userId:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User",
-    require:true,
+    required:true,
 
 },
 items:[{
@@ -42,7 +42,7 @@ shippingAddress:{
 },
 status:{
     type:String,
-    default:"processing", // processing , shipped , deliverd
+    default:"processing", // processing , shipped , delivered
 },
 createdAt:{
     type:Date,

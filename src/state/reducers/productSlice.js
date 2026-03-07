@@ -12,7 +12,7 @@ export const fetchProduct = createAsyncThunk(
       if (category) params.append("category", category);
 
       const res = await fetch(
-        `http://localhost:3000/api/filter?${params.toString()}`
+        `http://localhost:3000/api/filter?${params.toString()}`,
       );
 
       if (!res.ok) {
@@ -26,13 +26,30 @@ export const fetchProduct = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err.message);
     }
-  }
+  },
+);
+export const fetchSingleProduct = createAsyncThunk(
+  "product/fetchSingleProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/product/single/${id}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        return rejectWithValue(data.message);
+      }
+      return data.product;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  },
 );
 
 const productSlice = createSlice({
   name: "product",
   initialState: {
     product: [],
+    singleProduct:null,
     loading: false,
     query: "",
     category: "",
@@ -57,6 +74,19 @@ const productSlice = createSlice({
         state.product = action.payload; // ✅ already array
       })
       .addCase(fetchProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchSingleProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.singleProduct = null;
+      })
+      .addCase(fetchSingleProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleProduct = action.payload;
+      })
+      .addCase(fetchSingleProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

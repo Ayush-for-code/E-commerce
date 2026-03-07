@@ -1,0 +1,70 @@
+import { useState, useEffect } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchSingleProduct } from "../state/reducers/productSlice"
+
+const OrderConfirm = () => {
+
+  const { singleProduct } = useSelector((state) => state.product)
+  const { id } = useParams()
+  const dispatch = useDispatch()
+
+  const [qty, setQty] = useState(1)
+
+  const increaseQty = () => setQty(qty + 1)
+  const decreaseQty = () => {
+    if (qty > 1) setQty(qty - 1)
+  }
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchSingleProduct(id))
+    }
+  }, [dispatch, id])
+
+  // 🔴 FIX HERE
+  if (!singleProduct) {
+    return <h2>Loading...</h2>
+  }
+
+  const delivery = 50
+  const totalAmount = singleProduct.price * qty + delivery
+
+  return (
+    <div className='order-details'>
+      <div>
+
+        <span>
+          <h2>Name :</h2>
+          <h2>{singleProduct.name}</h2>
+        </span>
+
+        <span>
+          <h2>Price :</h2>
+          <h2>₹{singleProduct.price}</h2>
+        </span>
+
+        <span>
+          <h2>Delivery :</h2>
+          <h2>₹{delivery}</h2>
+        </span>
+
+        <div className="quantity">
+          <button onClick={decreaseQty}>-</button>
+          <span>{qty}</span>
+          <button onClick={increaseQty}>+</button>
+        </div>
+
+        <span>
+          <h2>Total Amount :</h2>
+          <h2>₹{totalAmount}</h2>
+        </span>
+
+      </div>
+
+      <Link to="/payment">Order Confirm</Link>
+    </div>
+  )
+}
+
+export default OrderConfirm
