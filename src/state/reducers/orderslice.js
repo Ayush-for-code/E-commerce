@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async ({ id, qty,name,price }, { rejectWithValue }) => {
+  async ({ id, qty }, { rejectWithValue }) => {
     try {
       const res = await fetch(`http://localhost:3000/api/order/create`, {
         method: "POST",
@@ -10,14 +10,22 @@ export const createOrder = createAsyncThunk(
           "Content-type": "application/json",
           "auth-token": localStorage.getItem("auth-token"),
         },
-        body: JSON.stringify({
-          productId: id,
-          quantity: qty,
-          name: name,
-          price: price,
-        },{
-
-        }),
+        body: JSON.stringify(
+          {
+            items: [
+              {
+                productId:id,
+                quantity:qty
+              }
+            ],
+              shippingAddress: {
+      address: "front of GIC ward no:4 gadarpur",
+      state: "uttrakhand",
+      city: "gadarpur",
+      pincode: 263152
+    }
+          },
+        ),
       });
       const data = await res.json();
       console.log(data);
@@ -26,7 +34,7 @@ export const createOrder = createAsyncThunk(
       }
       return data;
     } catch (error) {
-      rejectWithValue(error.message);
+    return  rejectWithValue(error.message);
     }
   },
 );
@@ -83,7 +91,7 @@ const orderSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false;
-       state.order.push(action.payload);
+        state.order.push(action.payload);
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;

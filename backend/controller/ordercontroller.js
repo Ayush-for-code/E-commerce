@@ -1,41 +1,79 @@
 const Products = require("../modals/Product");
 const Order = require("../modals/Order");
 
-exports.createOrder = async (req,res)=>{
-   try{
-const userId = req.user.id;
-   const {productId, quantity} = req.body; //taking variables from body using deconstructing method
-   //checking for product
-   const product = await Products.findById(productId);
-   if(!product){
-      return res.status(404).json({sucess:false,message:"product not found"})
-   }
-   //check for stocks before order
-   if(product.stock < quantity){
-    return res.status(404).json({sucess:false,message:"not enough product"})
-   }
-   let order = new Order({
+exports.createOrder = async (req, res) => {
+  try {
+
+    const userId = req.user.id;
+    const { items, shippingAddress } = req.body;
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No items provided"
+      });
+    }
+
+    const { productId, quantity } = items[0];
+    const qty = Number(quantity);
+
+    const { address, city, state, pincode } = shippingAddress;
+
+    const product = await Products.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "product not found"
+      });
+    }
+
+    if (product.stock < qty) {
+      return res.status(400).json({
+        success: false,
+        message: "not enough product"
+      });
+    }
+
+    let order = new Order({
       userId,
-      items:[{
-         productId,quantity
-      }],
-      totalPrice: product.price * quantity,
-      status:"Pending"
-   })
-  //reducing stocks after purcahsing product
-  product.stock -= quantity;
-  await product.save()
+      items: [
+        {
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: qty,
+          totalPrice: product.price * qty
+        }
+      ],
+      shippingAddress: {
+        address,
+        city,
+        state,
+        pincode
+      },
+      status: "processing"
+    });
 
-   //saving order
-   await order.save();
-   res.status(201).json({success:true,message:"successfully created a order (Pending)",order});
-   }
-   catch(err){
-      res.status(500).json({success:false,message:"faield to create order"});
-   }
+    product.stock -= qty;
+    await product.save();
 
+    await order.save();
 
-}
+    res.status(201).json({
+      success: true,
+      message: "Order created successfully",
+      order
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "failed to create order"
+    });
+  }
+};
+
 exports.getUserOrder = async (req,res)=>{
    try{
    const userId = req.user.id;

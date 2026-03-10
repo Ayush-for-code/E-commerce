@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchSingleProduct } from "../state/reducers/productSlice"
+import {fetchAddress} from "../state/reducers/address"
 import { createOrder} from "../state/reducers/orderslice"
 
 const OrderConfirm = () => {
 
-  const { singleProduct } = useSelector((state) => state.product)
+  const { singleProduct } = useSelector((state) => state.product);
+  const {address} = useSelector((state)=> state.addresses)
   const { id } = useParams()
   const dispatch = useDispatch()
 
@@ -66,7 +68,7 @@ const OrderConfirm = () => {
 
       </div>
 
-      <Link to="/payment" onClick={confirmOrder}>Order Confirm</Link>
+      <Link to="/payment" onClick={()=>{confirmOrder()}}>Order Confirm</Link>
     </div>
   )
 }

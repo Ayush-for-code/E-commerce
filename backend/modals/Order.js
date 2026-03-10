@@ -38,8 +38,7 @@ shippingAddress:{
     address:String,
     state:String,
     city:String,
-    pincode:Number,
-
+    pincode:Number
 },
 status:{
     type:String,
