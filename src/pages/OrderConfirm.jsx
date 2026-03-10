@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchSingleProduct } from "../state/reducers/productSlice"
+import { createOrder} from "../state/reducers/orderslice"
 
 const OrderConfirm = () => {
 
@@ -15,14 +16,17 @@ const OrderConfirm = () => {
   const decreaseQty = () => {
     if (qty > 1) setQty(qty - 1)
   }
+  const confirmOrder = ()=>{
+    dispatch(createOrder({id,qty}))
+    console.log("confirm")
+  }
 
   useEffect(() => {
     if (id) {
       dispatch(fetchSingleProduct(id))
     }
   }, [dispatch, id])
-
-  // 🔴 FIX HERE
+//if details are not fetched show loading 
   if (!singleProduct) {
     return <h2>Loading...</h2>
   }
@@ -62,7 +66,7 @@ const OrderConfirm = () => {
 
       </div>
 
-      <Link to="/payment">Order Confirm</Link>
+      <Link to="/payment" onClick={confirmOrder}>Order Confirm</Link>
     </div>
   )
 }

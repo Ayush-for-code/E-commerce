@@ -44,7 +44,7 @@ exports.getUserOrder = async (req,res)=>{
    if(!orders || orders.length === 0){
       return res.status(404).json({success:false,message:"order not found"});
    }
-   res.status(200).json({success:true,message:"here your order",order});
+   res.status(200).json({success:true,message:"here your order",orders});
 
    }
    catch(err){
