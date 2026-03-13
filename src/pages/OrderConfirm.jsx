@@ -20,7 +20,7 @@ const OrderConfirm = () => {
   }
   const confirmOrder = ()=>{
     dispatch(createOrder({id,qty}))
-    console.log("confirm")
+   
   }
 
   useEffect(() => {

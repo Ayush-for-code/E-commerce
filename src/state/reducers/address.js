@@ -212,7 +212,6 @@ const addressSlice = createSlice({
         state.loading = false;
         state.address = action.payload;
         
-        
       })
       .addCase(setDefaultAddress.rejected,(state,action)=>{
         state.loading = false;

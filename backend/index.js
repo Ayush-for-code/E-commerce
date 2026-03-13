@@ -16,6 +16,7 @@ app.use("/api/product",require("./routes/productRoutes"));
 app.use("/api/order/",require("./routes/order"));
 app.use("/api/address",require("./routes/addressRoute"));
 app.use("/api/",require("./routes/filter"));
+app.use("/api/payment",require("./routes/paymentRoute"));
 
 //server testing route 
 app.get("/",(req,res)=>{

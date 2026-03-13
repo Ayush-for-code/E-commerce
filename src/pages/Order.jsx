@@ -23,12 +23,14 @@ function Orders() {
           <p>total: {item.items[0]?.totalPrice}</p>
           <p>payment Method: {item.paymentInfo.method}</p>
           <p>status: {item.paymentInfo.status}</p>
-          {/* <div className="add-info" key={item._id}>
-            <p>address:{item.shippingAddress.address}</p>
-            <p>state:{item.shippingAddress.state}</p>
-            <p>city:{item.shippingAddress.city}</p>
-            <p>pincode:{item.shippingAddress.pincode}</p>
-          </div> */}
+        {item.shippingAddress && (
+  <div className="add-info">
+    <p>address: {item.shippingAddress.address ||"N/A"}</p>
+    <p>state: {item.shippingAddress.state||"N/A"}</p>
+    <p>city: {item.shippingAddress.city||"N/A"}</p>
+    <p>pincode: {item.shippingAddress.pincode||"N/A"}</p>
+  </div>
+)}
         </div>
         
       ))}
