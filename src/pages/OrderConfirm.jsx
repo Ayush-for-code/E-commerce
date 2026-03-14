@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchSingleProduct } from "../state/reducers/productSlice"
-import {fetchAddress} from "../state/reducers/address"
+import {fetchAddress} from "../state/reducers/address"//still have to for adding only deafault address only
 import { createOrder} from "../state/reducers/orderslice"
+import { createPayment } from "../state/reducers/paymentslice"
 
 const OrderConfirm = () => {
 
@@ -21,6 +22,29 @@ const OrderConfirm = () => {
   const confirmOrder = ()=>{
     dispatch(createOrder({id,qty}))
    
+  }
+
+  const onPayment = async ()=>{
+const result = await dispatch(createPayment(id));
+
+  const order = result.payload.order;
+
+  const options = {
+    key: "rzp_test_SQc4XgiRWHRCAA",
+    amount: order.amount,
+    currency: "INR",
+    order_id: order.id,
+
+    handler: function (response) {
+      console.log(response);
+    }
+  };
+
+  const paymentObject = new window.Razorpay(options);
+
+  paymentObject.open();
+
+
   }
 
   useEffect(() => {
