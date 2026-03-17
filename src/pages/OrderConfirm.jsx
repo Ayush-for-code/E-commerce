@@ -9,7 +9,8 @@ import { createPayment } from "../state/reducers/paymentslice"
 const OrderConfirm = () => {
 
   const { singleProduct } = useSelector((state) => state.product);
-  const {address} = useSelector((state)=> state.addresses)
+  // const {address} = useSelector((state)=> state.addresses);
+  const {payment} = useSelector((state)=> state.payment);
   const { id } = useParams()
   const dispatch = useDispatch()
 
@@ -19,13 +20,11 @@ const OrderConfirm = () => {
   const decreaseQty = () => {
     if (qty > 1) setQty(qty - 1)
   }
-  const confirmOrder = ()=>{
-    dispatch(createOrder({id,qty}))
-   
-  }
+  const confirmOrder = async ()=>{
+    await dispatch(createOrder({id,qty}))
 
-  const onPayment = async ()=>{
-const result = await dispatch(createPayment(id));
+    //tempoery put here for check 
+    const result = await dispatch(createPayment(id));
 
   const order = result.payload.order;
 
@@ -43,9 +42,9 @@ const result = await dispatch(createPayment(id));
   const paymentObject = new window.Razorpay(options);
 
   paymentObject.open();
-
-
+   
   }
+
 
   useEffect(() => {
     if (id) {

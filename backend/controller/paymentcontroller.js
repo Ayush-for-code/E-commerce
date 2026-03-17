@@ -2,7 +2,7 @@
 const Product = require("../modals/Product");
 const Order = require("../modals/Order");
 const crypto = require("crypto");
-
+const razorpay = require("../config/razor");
 exports.createPayment = async (req, res) => {
   try {
     const { productId } = req.body; //never getting price/amount from fortend
