@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchSingleProduct } from "../state/reducers/productSlice"
 import {fetchAddress} from "../state/reducers/address"//still have to for adding only deafault address only
 import { createOrder} from "../state/reducers/orderslice"
-import { createPayment } from "../state/reducers/paymentslice"
+import { createPayment,verifyPayment } from "../state/reducers/paymentslice"
 
 const OrderConfirm = () => {
 
@@ -20,30 +20,50 @@ const OrderConfirm = () => {
   const decreaseQty = () => {
     if (qty > 1) setQty(qty - 1)
   }
-  const confirmOrder = async ()=>{
-    await dispatch(createOrder({id,qty}))
+  const confirmOrder = async () => {
+  try {
+    const orderResult = await dispatch(createOrder({ id, qty }));
 
-    //tempoery put here for check 
-    const result = await dispatch(createPayment(id));
+    const paymentResult = await dispatch(createPayment(id));
 
-  const order = result.payload.order;
-
-  const options = {
-    key: "rzp_test_SQc4XgiRWHRCAA",
-    amount: order.amount,
-    currency: "INR",
-    order_id: order.id,
-
-    handler: function (response) {
-      console.log(response);
+    if (!paymentResult.payload || paymentResult.error) {
+      console.error("Payment creation failed");
+      return;
     }
-  };
 
-  const paymentObject = new window.Razorpay(options);
+    const order = paymentResult.payload.order;
 
-  paymentObject.open();
-   
+    if (!window.Razorpay) {
+      alert("Razorpay SDK not loaded");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_SQc4XgiRWHRCAA",
+      amount: order.amount,
+      currency: "INR",
+      order_id: order.id,
+
+      handler: async function (response) {
+        console.log(response);
+        const verifyResult = await dispatch(verifyPayment(response));
+        console.log(verifyResult)
+
+        if (verifyResult.payload?.success) {
+          console.log("Payment verified");
+        } else {
+          console.error("Verification failed");
+        }
+      }
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+
+  } catch (err) {
+    console.error(err);
   }
+};
 
 
   useEffect(() => {

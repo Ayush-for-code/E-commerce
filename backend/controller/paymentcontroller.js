@@ -43,10 +43,10 @@ const {
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
 
-  const genSingnature = crypto.createHmac("sha256",process.env.SECRET)
+  const genSignature = crypto.createHmac("sha256",process.env.SECRET)
   .update(body.toString())
   .digest("hex");
-  if(genSingnature === razorpay_signature){
+  if(genSignature === razorpay_signature){
     return res.status(200).json({
       success:true,
       message:"successfully verify your payment",
