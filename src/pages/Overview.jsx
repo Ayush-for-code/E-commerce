@@ -50,19 +50,21 @@ if (!singleProduct) {
 
       <div className='card-info'>
         <h2>{singleProduct.name}</h2>
+         <span className='discount'>
+          10% off
+        </span>
 
         <span className='price'>
           ₹{singleProduct.price}
         </span>
+       
 
         <p>
-        {singleProduct.description}
+        {singleProduct.description.slice(0,50)}...
         </p>
-
      
-
-        <Link to={`/confirm/${singleProduct._id}`}>BUY NOW</Link>
       </div>
+      <Link to={`/confirm/${singleProduct._id}`}>BUY NOW</Link>
 
     </div>
    </div>

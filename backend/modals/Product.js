@@ -35,6 +35,10 @@ const ProductSchema = new mongoose.Schema({
     required: false,
     trim: true // Full image URL
   },
+  dicount:{
+   type:Number,
+   required:false
+  },
 
   createdAt: {
     type: Date,

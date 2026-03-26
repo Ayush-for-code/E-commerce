@@ -1,4 +1,5 @@
 const Address = require("../modals/Address");
+const Order = require("../modals/Order");
 
 exports.addAddress = async (req, res) => {
   try {
@@ -246,3 +247,19 @@ exports.removeDefaultAddress = async (req, res) => {
     });
   }
 };
+
+//this is a endpoint for fetch only users default address
+exports.fetchDefaultAddress= async (req,res)=>{
+try{
+   const userId = req.user.id;
+   const orderId = req.params.orderId;
+ 
+ const order = await Order.findOne({_id:orderId});
+ 
+ res.status(200).json({success:true,message:"your default order",order});
+}
+catch(err){
+   console.error("Get default address error:", err);
+  return res.status(500).json({success:false,message:"internal server error"});
+}
+}

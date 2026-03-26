@@ -74,8 +74,8 @@ export const deleteAddress = createAsyncThunk(
 //for updating user addresses form database
 export const updateAddress = createAsyncThunk(
   "address/updateAddress",
-  async ({id,addressData},{rejectWithValue}) => {
-       try {
+  async ({ id, addressData }, { rejectWithValue }) => {
+    try {
       const res = await fetch(
         `http://localhost:3000/api/address/update/${id}`,
         {
@@ -84,24 +84,26 @@ export const updateAddress = createAsyncThunk(
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("auth-token"),
           },
-          body: JSON.stringify(addressData)
+          body: JSON.stringify(addressData),
         },
       );
       const data = await res.json();
       if (!data.success) {
         return rejectWithValue(data.message);
       }
-     console.log("successfully upgraded your address");
-      return data.address
+      console.log("successfully upgraded your address");
+      return data.address;
     } catch (err) {
       return rejectWithValue(err.message);
     }
   },
 );
 
-//for setDeault address to use only one address for order at a time 
-export const setDefaultAddress = createAsyncThunk("address/setDefaultAddress", async (id,{rejectWithValue})=>{
-  try {
+//for setDeault address to use only one address for order at a time
+export const setDefaultAddress = createAsyncThunk(
+  "address/setDefaultAddress",
+  async (id, { rejectWithValue }) => {
+    try {
       const res = await fetch(
         `http://localhost:3000/api/address/setDefault/${id}`,
         {
@@ -109,20 +111,44 @@ export const setDefaultAddress = createAsyncThunk("address/setDefaultAddress", a
           headers: {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("auth-token"),
-          }         
+          },
         },
       );
       const data = await res.json();
       if (!data.success) {
         return rejectWithValue(data.message);
       }
-     console.log("setdefault");
-      return data.addresses
-
+      console.log("setdefault");
+      return data.addresses;
     } catch (err) {
       return rejectWithValue(err.message);
     }
-});
+  },
+);
+
+//slice for fetch only deafult address
+export const fetchDefaultAddress = createAsyncThunk(
+  "address/fetchDefaultAddress",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch("http://localhost:3000/api/address/setDefault", {
+        method: "POST",
+        header: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("auth-token"),
+        },
+      });
+      const data = await res.json();
+      if (!data.success) {
+        return rejectWithValue(data.message);
+      }
+      console.log(data);
+      return data.defaultAddress;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  },
+);
 
 const addressSlice = createSlice({
   name: "address",
@@ -183,40 +209,51 @@ const addressSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(updateAddress.rejected, (state,action)=>{
-         state.loading = false;
-         state.error = action.payload;
-      })
-      
-      .addCase(updateAddress.pending, (state)=>{
-         state.loading = true;
-         state.error = null;
-      })
-      
-      .addCase(updateAddress.fulfilled, (state,action)=>{
-        //still need to learn this paart
-           state.loading = false;
-  const index = state.address.findIndex(
-    (item) => item._id === action.payload._id
-  );
-
-  if (index !== -1) {
-    state.address[index] = action.payload;
-  }
-      })
-      .addCase(setDefaultAddress.pending,(state)=>{
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(setDefaultAddress.fulfilled,(state,action)=>{
-        state.loading = false;
-        state.address = action.payload;
-        
-      })
-      .addCase(setDefaultAddress.rejected,(state,action)=>{
+      .addCase(updateAddress.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+
+      .addCase(updateAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updateAddress.fulfilled, (state, action) => {
+        //still need to learn this paart
+        state.loading = false;
+        const index = state.address.findIndex(
+          (item) => item._id === action.payload._id,
+        );
+
+        if (index !== -1) {
+          state.address[index] = action.payload;
+        }
+      })
+      .addCase(setDefaultAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(setDefaultAddress.fulfilled, (state, action) => {
+        state.loading = false;
+        state.address = action.payload;
+      })
+      .addCase(setDefaultAddress.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchDefaultAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDefaultAddress.fulfilled, (state, action) => {
+        state.loading = false;
+        state.address = action.payload;
+      })
+      .addCase(fetchDefaultAddress.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

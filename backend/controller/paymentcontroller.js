@@ -1,4 +1,3 @@
-
 const Product = require("../modals/Product");
 const Order = require("../modals/Order");
 const crypto = require("crypto");
@@ -17,10 +16,13 @@ exports.createPayment = async (req, res) => {
     const options = {
       amount: product.price * 100,
       currency: "INR",
-     receipt: `receipt_${Date.now()}`
-
+      receipt: `receipt_${Date.now()}`,
     };
-     const order = await razorpay.orders.create(options);
+    const order = await razorpay.orders.create(options);
+    // await Order.findByIdAndUpdate(orderId, {
+    //   "paymentInfo.razorpayOrderId": order.id,
+    //   "paymentInfo.status": "pending",
+    // });
     return res.status(200).json({
       success: true,
       message: "successfully created payment",
@@ -35,28 +37,25 @@ exports.createPayment = async (req, res) => {
 
 exports.verifyPayment = async (req, res) => {
   try {
-const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature
-    } = req.body;
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-
-  const genSignature = crypto.createHmac("sha256",process.env.SECRET)
-  .update(body.toString())
-  .digest("hex");
-  if(genSignature === razorpay_signature){
-    return res.status(200).json({
-      success:true,
-      message:"successfully verify your payment",
-    })
-  }else{
-     return res.status(400).json({
-      success:false,
-      message:"failed to verify your payment",
-    })
-  }
+    const genSignature = crypto
+      .createHmac("sha256", process.env.SECRET)
+      .update(body.toString())
+      .digest("hex");
+    if (genSignature === razorpay_signature) {
+      return res.status(200).json({
+        success: true,
+        message: "successfully verify your payment",
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "failed to verify your payment",
+      });
+    }
   } catch (err) {
     return res
       .status(500)

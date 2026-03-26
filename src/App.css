@@ -312,7 +312,7 @@ top:0;
 .card-info{
 padding:12px;
 }
-.card-info a{
+.overview-container a{
   text-decoration: none;
   color:inherit;
   background-color: yellow;

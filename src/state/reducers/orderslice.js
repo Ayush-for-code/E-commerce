@@ -17,13 +17,7 @@ export const createOrder = createAsyncThunk(
                 productId:id,
                 quantity:qty
               }
-            ],
-              shippingAddress: {
-      address: "front of GIC ward no:4 gadarpur",
-      state: "uttrakhand",
-      city: "gadarpur",
-      pincode: 263152
-    }
+            ]
           },
         ),
       });
@@ -69,20 +63,6 @@ const orderSlice = createSlice({
     order: [],
     loading: false,
     error: null,
-  },
-  reducers: {
-    confirmOrder: () => {
-      console.log("working");
-    },
-    cancleOrder: (state, action) => {
-      console.log("working");
-    },
-    loading: (state, action) => {
-      console.log("working");
-    },
-    error: (state, action) => {
-      console.log("working");
-    },
   },
   extraReducers: (builder) => {
     builder

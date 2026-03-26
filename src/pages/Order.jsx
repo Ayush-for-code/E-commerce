@@ -16,11 +16,11 @@ function Orders() {
       {order?.map((item) => (
         <div className="orders" key={item._id}>
           <p>Order ID: {item._id}</p>
-          <p>name: {item.items[0]?.name}</p>
+          <p>name: {item.items?.[0]?.name}</p>
           <p>Status: {item.status}</p>
-          <p>quantity: {item.items[0]?.quantity}</p>
-          <p>price: {item.items[0]?.price}</p>
-          <p>total: {item.items[0]?.totalPrice}</p>
+          <p>quantity: {item.items?.[0]?.quantity}</p>
+          <p>price: {item.items?.[0]?.price}</p>
+          <p>total: {item.items?.[0]?.totalPrice}</p>
           <p>payment Method: {item.paymentInfo.method}</p>
           <p>status: {item.paymentInfo.status}</p>
         {item.shippingAddress && (

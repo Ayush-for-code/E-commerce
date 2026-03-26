@@ -1,12 +1,16 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 const Payment = () => {
+  const navigate = useNavigate();
   const loadScript = (src)=>{
     return new Promise((resolve)=>{
       const script = document.createElement("script");
       script.src = src;
       script.onload =()=>{
+        
         resolve(true)
       }
       script.onerror =()=>{
@@ -14,6 +18,7 @@ const Payment = () => {
       }
       document.body.appendChild(script);
     })
+    
   }
   useEffect(()=>{
 const loadRazorpay = async () => {
@@ -35,7 +40,7 @@ const loadRazorpay = async () => {
   },[])
   return (
     <div>
-      <h3> select payment method</h3>
+
     </div>
   )
 }

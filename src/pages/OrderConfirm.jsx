@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams,useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchSingleProduct } from "../state/reducers/productSlice"
 import {fetchAddress} from "../state/reducers/address"//still have to for adding only deafault address only
 import { createOrder} from "../state/reducers/orderslice"
 import { createPayment,verifyPayment } from "../state/reducers/paymentslice"
 
+
 const OrderConfirm = () => {
 
   const { singleProduct } = useSelector((state) => state.product);
   // const {address} = useSelector((state)=> state.addresses);
   const {payment} = useSelector((state)=> state.payment);
+  const navigate = useNavigate()
   const { id } = useParams()
   const dispatch = useDispatch()
 
@@ -20,9 +22,11 @@ const OrderConfirm = () => {
   const decreaseQty = () => {
     if (qty > 1) setQty(qty - 1)
   }
+
+  //function for confirm order by getting order Id from createOrder Slice and run handerler function for verify
+   
   const confirmOrder = async () => {
   try {
-    const orderResult = await dispatch(createOrder({ id, qty }));
 
     const paymentResult = await dispatch(createPayment(id));
 
@@ -45,15 +49,16 @@ const OrderConfirm = () => {
       order_id: order.id,
 
       handler: async function (response) {
-        console.log(response);
         const verifyResult = await dispatch(verifyPayment(response));
         console.log(verifyResult)
+        const orderResult = await dispatch(createOrder({ id, qty }));
 
         if (verifyResult.payload?.success) {
           console.log("Payment verified");
         } else {
           console.error("Verification failed");
         }
+       navigate("/")
       }
     };
 
@@ -77,10 +82,14 @@ const OrderConfirm = () => {
   }
 
   const delivery = 50
-  const totalAmount = singleProduct.price * qty + delivery
+  const discount = 10;
+  const subtotal = singleProduct.price * qty;
+  const discountTotal = (subtotal * discount) /100;
+  const totalAmount = Math.floor( subtotal + delivery - discountTotal);
 
   return (
     <div className='order-details'>
+     
       <div>
 
         <span>
@@ -91,6 +100,11 @@ const OrderConfirm = () => {
         <span>
           <h2>Price :</h2>
           <h2>₹{singleProduct.price}</h2>
+        </span>
+
+        <span>
+          <h2>Discount :</h2>
+          <h2>{discount}%</h2>
         </span>
 
         <span>
