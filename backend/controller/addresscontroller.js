@@ -1,5 +1,4 @@
 const Address = require("../modals/Address");
-const Order = require("../modals/Order");
 
 exports.addAddress = async (req, res) => {
   try {
@@ -252,11 +251,18 @@ exports.removeDefaultAddress = async (req, res) => {
 exports.fetchDefaultAddress= async (req,res)=>{
 try{
    const userId = req.user.id;
-   const orderId = req.params.orderId;
  
- const order = await Order.findOne({_id:orderId});
+ const addressDoc = await Address.findOne({userId});
+ if(!addressDoc || addressDoc.addresses.length === 0 ){
+  return res.status(404).json({success:false,message:"address not found"});
+ }
+ const defaultAddress = addressDoc.addresses.find(add => add.isDefault);
+ //check for finding if any address is setDefault for not
+ if(!defaultAddress){
+  return res.status(404).json({success:false,message:"no address is set to default"});
+ }
  
- res.status(200).json({success:true,message:"your default order",order});
+ res.status(200).json({success:true,message:"your default address",defaultAddress});
 }
 catch(err){
    console.error("Get default address error:", err);

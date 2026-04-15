@@ -62,3 +62,18 @@ exports.verifyPayment = async (req, res) => {
       .json({ success: false, message: "internal sever error" });
   }
 };
+exports.fetchOrderById = async(req,res)=>{
+  try{
+  const userId = req.user.id;
+  const orderId = req.params.id;
+
+  const order = await Order.findById(orderId);
+  if(!order){
+    return res.status(404).json({success:false,message:"order not found"});
+  }
+   return res.status(200).json({success:true,message:"order",order});
+  }
+  catch(err){
+    return res.status(500).json({success:false,message:"internal server error"});
+  }
+}

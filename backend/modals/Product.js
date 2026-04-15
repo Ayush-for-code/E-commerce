@@ -35,7 +35,7 @@ const ProductSchema = new mongoose.Schema({
     required: false,
     trim: true // Full image URL
   },
-  dicount:{
+  discount:{
    type:Number,
    required:false
   },

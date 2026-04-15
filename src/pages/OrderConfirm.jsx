@@ -29,6 +29,7 @@ const OrderConfirm = () => {
   try {
 
     const paymentResult = await dispatch(createPayment(id));
+     const orderResult = await dispatch(createOrder({ id, qty }));
 
     if (!paymentResult.payload || paymentResult.error) {
       console.error("Payment creation failed");
@@ -51,7 +52,7 @@ const OrderConfirm = () => {
       handler: async function (response) {
         const verifyResult = await dispatch(verifyPayment(response));
         console.log(verifyResult)
-        const orderResult = await dispatch(createOrder({ id, qty }));
+       
 
         if (verifyResult.payload?.success) {
           console.log("Payment verified");

@@ -38,7 +38,11 @@ const handleSubmit = (e)=>{
 </div>
       <div className="setting-options">
         <h3> <Link to="/address">Address</Link></h3>
-        <h3> <Link to="/order">order</Link></h3>      
+        <h3> <Link to ="/login">Login</Link></h3>
+        <h3><Link to ="/signup">signup</Link></h3>
+         
+     
+            
       </div>
     </div>
         <h2>ShopEase</h2>
@@ -61,8 +65,6 @@ const handleSubmit = (e)=>{
           <option value="keyboard">keyboard</option>
         </datalist>
      </form>
-     <Link to ="/login">Login</Link>
-     <Link to ="/signup">signup</Link>
       <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/orders">

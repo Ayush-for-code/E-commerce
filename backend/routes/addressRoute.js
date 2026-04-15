@@ -9,7 +9,7 @@ router.put("/update/:addressId",fetchUser,updateAddress);
 router.delete("/remove/:addressId",fetchUser,removeAddress);
 router.post("/setDefault/:addressId",fetchUser,setDefaultAddress);
 router.post("/removeDefault/:addressId",fetchUser,removeDefaultAddress);
-router.post("/order/:orderId",fetchUser,fetchDefaultAddress)
+router.post("/fetchDefault",fetchUser,fetchDefaultAddress)
 
 
 
