@@ -1,5 +1,14 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+body p,
+h2 {
+  font-family: "Outfit", sans-serif;
+}
+body button {
+  font-family: "Outfit", sans-serif;
 }
 * {
   padding: 0;
@@ -8,15 +17,15 @@ body {
 }
 .navbar {
   display: flex;
-  min-width:1000px;
-  height: 200px;
+  min-width: 1000px;
+  height: 90px;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   flex-grow: 1;
 
   justify-content: space-between;
   padding: 15px;
-  background: linear-gradient(to bottom, rgba(4, 4, 4, 0.905) 5%, #1F6F5F);
+  background: rgb(46, 45, 45);
 }
 
 .navbar a {
@@ -84,7 +93,7 @@ body {
   cursor: pointer;
 }
 .navbar h2 {
-  color: bisque;
+  color: white;
 }
 .items {
   display: flex;
@@ -105,18 +114,18 @@ body {
   align-items: center;
 }
 .product-image {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   box-shadow:
     6px 6px 3px rgba(147, 147, 147, 0.351),
     inset 3px 3px 3px rgba(231, 228, 228, 0.532);
   min-width: 90%;
-  
-  overflow:hidden;
+
+  overflow: hidden;
 }
-.product-image img{
-max-height: 100%;
+.product-image img {
+  max-height: 100%;
 }
 .productName {
   padding: 8px 16px;
@@ -247,8 +256,8 @@ span svg {
   }
 }
 .form {
-  position:fixed;
-  top:-500px;
+  position: fixed;
+  top: -500px;
   background-color: #8e8d8d;
   z-index: 1005;
   display: flex;
@@ -256,95 +265,100 @@ span svg {
   border-radius: 12px;
   flex-direction: column;
   width: 40%;
-  padding:15px;
-  transition:top 0.2s ease; 
+  padding: 15px;
+  transition: top 0.2s ease;
 }
-.form-open{
-top:0;
+.form-open {
+  top: 0;
 }
-.add-card{
+.add-card {
   position: relative;
-  box-shadow:3px 3px 16px 3px rgba(164, 163, 163, 0.519);
+  box-shadow: 3px 3px 16px 3px rgba(164, 163, 163, 0.519);
   border-radius: 12px;
-  padding:18px 24px;
+  padding: 18px 24px;
   margin: 18px 24px;
   min-width: 400px;
 }
-.editbtn{
-  position:absolute;
-  top:15px;
-  right:5px;
-  cursor:pointer;
+.editbtn {
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  cursor: pointer;
 }
-.add-card svg{
-
-  fill:grey;
+.add-card svg {
+  fill: grey;
 }
-.add-card h3{
+.add-card h3 {
   margin-bottom: 5px;
   margin-top: 5px;
- }
-.addInfo p{
-  padding: 3px 0 3px 0; 
 }
-.addInfo{
+.addInfo p {
+  padding: 3px 0 3px 0;
+}
+.addInfo {
   margin-bottom: 5px;
 }
-.add-card .default-btn.default{
- background-color: rgb(55, 220, 55);
- outline:none;
- border: none;
- padding: 8px 12px;
+.add-card .default-btn.default {
+  background-color: rgb(55, 220, 55);
+  outline: none;
+  border: none;
+  padding: 8px 12px;
 }
-.overview{
+.overview {
   text-decoration: none;
-    color: inherit;
+  color: inherit;
 }
-.image-slider{
-    border:1px solid black;
+.image-slider {
+ 
+  border-radius: 12px;
+  box-shadow:
+    6px 6px 3px rgba(147, 147, 147, 0.351),
+    inset 3px 3px 3px rgba(231, 228, 228, 0.532);
   display: flex;
   justify-content: center;
   max-width: 500px;
-  min-width: 400px;
+  min-width: 500px;
   min-height: 300px;
 }
-.image-slider img{
-   max-width: 500px;
-  min-width: 400px;
+.image-slider img {
+  max-width: 500px;
+  min-width: 500px;
   min-height: 300px;
-  object-fit:contain;
+  object-fit: contain;
 }
-.overview-container{
+.overview-container {
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
 }
-.overview-card{
-  border:1px solid black;
- width: 70%;
- padding:40px; 
+.overview-card {
+  box-shadow: 3px 3px 16px 3px rgba(164, 163, 163, 0.519);
+  border-radius: 12px;
+  width: 70%;
+  padding: 40px;
 }
-.card-info{
-padding:12px;
+.card-info {
+  padding: 12px;
 }
-.overview-container a{
+.overview-container a {
   text-decoration: none;
-  color:inherit;
+  color: inherit;
   background-color: yellow;
   padding: 6px;
   font-weight: 600;
 }
-.card-info p{
-  margin-bottom:10 px;
+.card-info p {
+  margin-bottom: 10 px;
 }
-.order-details a{
-    text-decoration: none;
-  color:inherit;
+.order-details a {
+  text-decoration: none;
+  color: inherit;
   background-color: yellow;
   padding: 6px;
   font-weight: 600;
 }
 /* css for filter menu */
-.filter-menu{
+.filter-menu {
   position: fixed;
   top: 0;
   right: -300px;
@@ -354,21 +368,21 @@ padding:12px;
   transition: right 0.3s ease;
   z-index: 1001;
 }
-.filter-menu.open{
-  right:0
+.filter-menu.open {
+  right: 0;
 }
 /* css for orders  */
-.page{
+.page {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.orders{
-  box-shadow:3px 3px 16px 3px rgba(164, 163, 163, 0.519);
-  padding:14px 20px;
-  margin-top:15px;
+.orders {
+  box-shadow: 3px 3px 16px 3px rgba(164, 163, 163, 0.519);
+  padding: 14px 20px;
+  margin-top: 15px;
   width: 85%;
   border-radius: 12px;
-  margin-bottom:15px;
+  margin-bottom: 15px;
 }

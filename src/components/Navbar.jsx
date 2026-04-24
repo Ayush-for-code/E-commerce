@@ -8,16 +8,16 @@ import { setQuery } from "../state/reducers/productSlice";
 
 function Navbar(props) {
 
+const [input,setinput] = useState("")
+
 const query = useSelector(state=>state.query)
   const [activeMenu, setActiveMenu] = useState(null)
 
 const dispatch = useDispatch();
 
-const handleSearch = (e)=>{
-  dispatch(setQuery(e.target.value))
-}
 const handleSubmit = (e)=>{
   e.preventDefault()
+  dispatch(setQuery(input))
 } 
   return (
     <nav className="navbar">
@@ -45,6 +45,11 @@ const handleSubmit = (e)=>{
             
       </div>
     </div>
+    <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.7" d="M4.0828 11.8943C4.52171 9.55339 4.74117 8.38295 5.57434 7.69147C6.40752 7 7.59835 7 9.98003 7H14.0209C16.4026 7 17.5934 7 18.4266 7.69147C19.2598 8.38295 19.4792 9.55339 19.9181 11.8943L20.6681 15.8943C21.2853 19.186 21.5939 20.8318 20.6942 21.9159C19.7945 23 18.12 23 14.7709 23H9.23003C5.88097 23 4.20644 23 3.30672 21.9159C2.40701 20.8318 2.7156 19.186 3.3328 15.8943L4.0828 11.8943Z" fill="#ffee00"/>
+<path d="M9.75 5.98506C9.75 4.74242 10.7574 3.73506 12 3.73506C13.2426 3.73506 14.25 4.74242 14.25 5.98506V6.98506C14.816 6.98524 15.3119 6.9868 15.7499 6.99994C15.75 6.99499 15.75 6.99003 15.75 6.98506V5.98506C15.75 3.91399 14.0711 2.23506 12 2.23506C9.92893 2.23506 8.25 3.91399 8.25 5.98506V6.98506C8.25 6.99004 8.25005 6.99501 8.25015 6.99997C8.68814 6.98681 9.18397 6.98527 9.75 6.98508V5.98506Z" fill="#202021"/>
+<path d="M9.87823 15.75C10.1875 16.6249 11.0219 17.25 12.0004 17.25C12.9789 17.25 13.8133 16.6249 14.1226 15.75C14.2606 15.3595 14.6891 15.1548 15.0796 15.2928C15.4702 15.4309 15.6749 15.8594 15.5368 16.2499C15.0224 17.7054 13.6343 18.75 12.0004 18.75C10.3665 18.75 8.97841 17.7054 8.46397 16.2499C8.32594 15.8594 8.53063 15.4309 8.92117 15.2928C9.31171 15.1548 9.7402 15.3595 9.87823 15.75Z" fill="#202021"/>
+</svg>
         <h2>ShopEase</h2>
          <div className="filter-btn" onClick={()=>setActiveMenu("filter")}>
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z"/></svg>
@@ -54,7 +59,7 @@ const handleSubmit = (e)=>{
 </div>
 </div>
 
-        <input className="search" list="recent" placeholder="Search" onChange={handleSearch} htmlFor="recent" type="search"  />
+        <input className="search" list="recent" placeholder="Search" onChange={(e)=>{setinput(e.target.value)}} htmlFor="recent" type="search"  />
         <button className="search-btn">Search</button>
         <datalist id="recent">
           
@@ -66,7 +71,7 @@ const handleSubmit = (e)=>{
         </datalist>
      </form>
       <div className="nav-links">
-        <Link to="/">Home</Link>
+        <Link to="/" onClick={dispatch(setQuery(""))}>Home</Link>
         <Link to="/orders">
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>Orders</Link>
         <Link to="/wishlist"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>Wishlist</Link>
