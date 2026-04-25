@@ -3,7 +3,7 @@ const Product = require("../modals/Product");
 
 exports.filterProduct = async (req,res)=>{
 try{
-const {search,sort,maxPrice,minPrice,category,page =0,limit = 5 } = req.query;
+const {search,sort,maxPrice,minPrice,category,page =1,limit =6} = req.query;
 let query = {};
 if(search){
     
@@ -41,6 +41,7 @@ const skip = (currentPage -1) * perPage;
       .sort(sortOption)
       .skip(skip)
       .limit(perPage);
+
   res.status(200).json({
       success: true,
       products,

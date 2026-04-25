@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchProduct = createAsyncThunk(
   "product/fetchProduct",
-  async (_, { getState, rejectWithValue }) => {
+  async ({page=1}, { getState, rejectWithValue }) => {
     try {
       // ✅ READ FROM product slice
       const { query, category } = getState().product;
@@ -10,6 +10,7 @@ export const fetchProduct = createAsyncThunk(
       const params = new URLSearchParams();
       if (query) params.append("search", query);
       if (category) params.append("category", category);
+      params.append("page",page);
 
       const res = await fetch(
         `http://localhost:3000/api/filter?${params.toString()}`,
@@ -22,7 +23,11 @@ export const fetchProduct = createAsyncThunk(
       const data = await res.json();
 
       // ✅ return ONLY array
-      return data.products;
+      return {
+        products:data.products,
+        page:data.currentPage,
+        hasMore:data.hasMore
+      };
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -53,6 +58,7 @@ const productSlice = createSlice({
     loading: false,
     query: "",
     category: "",
+    hasMore:true,
     error: null,
   },
   reducers: {
@@ -71,7 +77,15 @@ const productSlice = createSlice({
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.loading = false;
-        state.product = action.payload; // ✅ already array
+        const {page,hasMore,products} = action.payload;
+        if(page === 1){
+          state.product = products;
+        }
+        else{
+          state.product = [...state.product,...products]
+        }
+       state.hasMore = hasMore;
+       state.error = null;
       })
       .addCase(fetchProduct.rejected, (state, action) => {
         state.loading = false;

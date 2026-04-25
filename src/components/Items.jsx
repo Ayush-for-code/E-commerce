@@ -8,7 +8,7 @@ import Product from "./Product";
 const Items = () => {
   const dispatch = useDispatch();
 
-  const { product, loading, error, query, category,singleProduct} = useSelector(
+  const { product, loading, error, query, category,hasMore} = useSelector(
     (state) => state.product
   );
   const [page , setpage] = useState(1)
@@ -18,14 +18,15 @@ const Items = () => {
   }
    const fetchMoreData = () => {
     const nextPage = page + 1;
-    dispatch(fetchProduct(page));
+    dispatch(fetchProduct({page: nextPage}));
    setpage(nextPage);
   };
   useEffect(() => {
-    dispatch(fetchProduct({ query, category }));
+    setpage(1)
+    dispatch(fetchProduct({page:1}));
   }, [dispatch, query, category]); // 🔑 re-fetch on search change
 
-  if (loading) return <h2>Loading products...</h2>;
+  if (loading && page === 1) return <h2>Loading products...</h2>;
   if (error) return <h2>Error: {error}</h2>;
 
   return (
@@ -33,10 +34,9 @@ const Items = () => {
      <InfiniteScroll
     dataLength={product.length}
     next={fetchMoreData}
-    inverse={true}
-    hasMore={true}
+    hasMore={hasMore}
     loader={<h4>Loading...</h4>}
-  ></InfiniteScroll>
+  >
     <div className="items">
       {Array.isArray(product) &&product.map((item) => (
       <Link to={`/overview/${item._id}`} className="overview" key={item._id} onClick={()=>{getProduct(item._id)}}> 
@@ -50,6 +50,8 @@ const Items = () => {
         /></Link>
       ))}
     </div>
+  </InfiniteScroll>
+    
     </>
     
   );
