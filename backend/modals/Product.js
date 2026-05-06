@@ -30,12 +30,10 @@ const ProductSchema = new mongoose.Schema({
     min: 0
   },
 
-  image: [
-    {
-    type: String,
-    trim: true // Full image URL
-  },
-  ],
+image: {
+  type: [String],
+  default: ["dont have image yet"]
+},
   discount:{
    type:Number,
    required:false

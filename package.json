@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev-backend": "nodemon backend/index.js",
-    "dev-all": "concurrently \"npm run dev\" \"npm run dev-backend\" ",
+    "dev-admin":"npm --prefix admin run dev",
+    "dev-all": "concurrently \"npm run dev\" \"npm run dev-backend\" \" npm run dev-admin\" ",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

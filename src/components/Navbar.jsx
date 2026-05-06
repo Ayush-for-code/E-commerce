@@ -40,6 +40,7 @@ const handleSubmit = (e)=>{
         <h3> <Link to="/address">Address</Link></h3>
         <h3> <Link to ="/login">Login</Link></h3>
         <h3><Link to ="/signup">signup</Link></h3>
+        <h3><a href="http://localhost:5174" target="_blank">Admin</a></h3>
          
      
             

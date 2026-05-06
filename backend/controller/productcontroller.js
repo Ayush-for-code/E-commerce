@@ -48,14 +48,26 @@ exports.getProduct = async (req, res) => {
 
 //updating user products
 exports.updateProduct = async (req, res) => {
-  try {
-    const update = Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+ try {
+    const update = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      message: "successfully updated",
+      update
     });
+
   } catch (err) {
-    res
-      .status(500)
-      .json({ success: false, message: "internal server error", err });
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      err
+    });
   }
 };
 //deleting or removing user Proudct
