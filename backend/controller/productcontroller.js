@@ -38,7 +38,7 @@ exports.getProduct = async (req, res) => {
     const products = await Product.find();
     res
       .status(200)
-      .json({ sucess: true, message: "here your all products", products });
+      .json({ success: true, message: "here your all products", products });
   } catch (err) {
     res
       .status(400)
