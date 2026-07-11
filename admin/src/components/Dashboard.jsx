@@ -2,22 +2,27 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useState ,useEffect} from 'react'
 import { useDispatch, useSelector} from 'react-redux'
-import { getProduct } from '../state/reducers/productReducer'
+import { getProduct,addProduct } from '../state/reducers/productReducer'
+
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const {products} = useSelector((state)=> state.product)
   const [isOpen,setOpen] = useState(false);
-  const [input ,setInput] = useState({name:"",price:"",stock:"",discount:"",image:null,discription:""})
+  const [input ,setInput] = useState({name:"",price:"",stock:"",discount:"",image:null,category:"",description:""})
   console.log(input);
 
   const handleInput = (e)=>{
    const {name,value,files} = e.target;
-   setInput((prev)=>({...prev,[name]:files ? files[0]: value}));
+   setInput((prev)=>({...prev,[name]:files ? files[0].name: value}));
+  }
+  const handleAdd = ()=>{
+    
   }
   const handleSubmit = (e)=>{
     e.preventDefault()
-    console.log(input)
+    console.log("input:",input);
+    dispatch(addProduct(input));
   }
  useEffect(()=>{
   dispatch(getProduct())
@@ -112,6 +117,16 @@ const Dashboard = () => {
           />
         </div>
 
+        <div className="category">
+          <p>Category</p>
+          <input
+            type="text"
+            placeholder="Enter category"
+            name="category"
+            value={input.category}
+             onChange={handleInput}
+          />
+      </div>
         <div className="stock">
           <p>Stock</p>
           <input
@@ -121,7 +136,7 @@ const Dashboard = () => {
             value={input.stock}
              onChange={handleInput}
           />
-        </div>
+      </div>
 
         <div className="discount">
           <p>Discount</p>
@@ -137,9 +152,9 @@ const Dashboard = () => {
         <div className="description-field">
           <p>Description</p>
           <textarea
-            name="discription"
+            name="description"
             placeholder="Enter detailed description"
-            value={input.discription}
+            value={input.description}
              onChange={handleInput}
           ></textarea>
         </div>

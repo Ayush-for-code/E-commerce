@@ -2,7 +2,8 @@ const Product = require("../modals/Product");
 
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, price, image, stock, category } = req.body; //getting fields from deconstructing method
+     console.log("REQ BODY:", req.body);
+    const { name, description, price, image, stock, category,discount} = req.body; //getting fields from deconstructing method
     //chekhing if product is already created
     const exsited = await Product.findOne({ name });
     if (exsited) {
@@ -17,6 +18,7 @@ exports.createProduct = async (req, res) => {
       price,
       stock,
       image,
+      discount,
       category,
     });
     await product.save();
@@ -73,7 +75,10 @@ exports.updateProduct = async (req, res) => {
 //deleting or removing user Proudct
 exports.removeProduct = async (req, res) => {
   try {
-    const remove = Product.findByIdAndUpdate(req.params.id);
+    const remove = await  Product.findByIdAndDelete(req.params.id);
+    if(!remove){
+      return res.status(404).json({success:false,message:"product not found"})
+    }
     res
       .status(200)
       .json({ success: true, message: "your product successfully got remove" });
@@ -86,7 +91,6 @@ exports.removeProduct = async (req, res) => {
         err,
       });
   }
-  res.send("your product is removed");
 };
 //function for fetching single specfic product
 exports.getSingleProduct = async (req, res) => {

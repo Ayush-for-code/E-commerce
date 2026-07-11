@@ -108,6 +108,7 @@ body button {
   display: flex;
   flex-direction: column;
   margin: 20px;
+  max-width:400px;
   min-width: 400px;
   height: 300px;
   justify-content: center;
@@ -121,11 +122,12 @@ body button {
     6px 6px 3px rgba(147, 147, 147, 0.351),
     inset 3px 3px 3px rgba(231, 228, 228, 0.532);
   min-width: 90%;
-
   overflow: hidden;
 }
 .product-image img {
   max-height: 100%;
+  max-width:100%;
+  object-fit: cover;
 }
 .productName {
   padding: 8px 16px;
