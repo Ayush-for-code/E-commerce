@@ -46,7 +46,9 @@ const Items = () => {
           price={item.price}
           description={item.description}
           category={item.category}
-          image={item.image}
+          image={ item.image[0].startsWith("http")
+            ? item.image[0]
+            : `http://localhost:3000/uploads/${item.image[0]}`}
         /></Link>
       ))}
     </div>

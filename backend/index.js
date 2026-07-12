@@ -3,6 +3,7 @@ require("dotenv").config({ path: __dirname + "/.env" });
 const connectToMongo = require("./db");
 connectToMongo();
 const app = express();
+const path = require("path");
 var  cors = require("cors")
 const PORT = process.env.PORT || 3000;
 
@@ -18,6 +19,7 @@ app.use("/api/order/",require("./routes/order"));
 app.use("/api/address",require("./routes/addressRoute"));
 app.use("/api/",require("./routes/filter"));
 app.use("/api/payment",require("./routes/paymentRoute"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 //server testing route 
 app.get("/",(req,res)=>{

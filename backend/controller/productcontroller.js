@@ -2,8 +2,15 @@ const Product = require("../modals/Product");
 
 exports.createProduct = async (req, res) => {
   try {
-     console.log("REQ BODY:", req.body);
-    const { name, description, price, image, stock, category,discount} = req.body; //getting fields from deconstructing method
+     console.log("BODY:", req.body);
+      console.log("file",req.file);
+    const { name, description, price, stock, category,discount} = req.body; //getting fields from deconstructing method
+    const image = req.file.filename;
+//chekcing for image file
+if(!req.file){
+ return res.status(404).json({success:false,message:"file not found"});
+}
+
     //chekhing if product is already created
     const exsited = await Product.findOne({ name });
     if (exsited) {
@@ -22,6 +29,7 @@ exports.createProduct = async (req, res) => {
       category,
     });
     await product.save();
+   
     res
       .status(200)
       .json({

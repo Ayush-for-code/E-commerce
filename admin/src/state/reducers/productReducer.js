@@ -7,10 +7,9 @@ export const addProduct = createAsyncThunk("product/addProduct",
        const res = await fetch("http://localhost:3000/api/product/create",{
         method :"POST",
         headers:{
-          "Content-type": "application/json",
           "auth-token":localStorage.getItem("auth-token")
         },
-        body:JSON.stringify(productData)
+        body:productData
        });
        console.log("string",JSON.stringify(productData));
        const data = await res.json();

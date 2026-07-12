@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { useState ,useEffect} from 'react'
 import { useDispatch, useSelector} from 'react-redux'
 import { getProduct,addProduct } from '../state/reducers/productReducer'
+import { ToastContainer, toast, Bounce } from "react-toastify";
+
 
 
 const Dashboard = () => {
@@ -14,21 +16,57 @@ const Dashboard = () => {
 
   const handleInput = (e)=>{
    const {name,value,files} = e.target;
-   setInput((prev)=>({...prev,[name]:files ? files[0].name: value}));
+   setInput((prev)=>({...prev,[name]:files ? files[0]: value}));
   }
   const handleAdd = ()=>{
     
   }
   const handleSubmit = (e)=>{
     e.preventDefault()
-    console.log("input:",input);
-    dispatch(addProduct(input));
+    const formData = new FormData();
+    formData.append("name", input.name);
+  formData.append("price", input.price);
+  formData.append("stock", input.stock);
+  formData.append("discount", input.discount);
+  formData.append("category", input.category);
+  formData.append("description", input.description);
+  formData.append("image", input.image);
+
+    dispatch(addProduct(formData));
+    setOpen(false);
+     const notify = () =>
+                    toast.success("successfuly added product", {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: false,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      transition: Bounce,
+                    });
+                    notify();
+
   }
  useEffect(()=>{
   dispatch(getProduct())
  },[dispatch])
   return (
    <div className='dashboard'>
+       <ToastContainer
+                  position="top-center"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick={false}
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="dark"
+                  transition={Bounce}
+                />
 
   <div className="heading">
     <div>
@@ -60,10 +98,15 @@ const Dashboard = () => {
             {
         products.map((items)=>(
           <div className="product" key={items._id}>
-            <img src={items.image} alt="" />
+            <img src={
+     items.image[0].startsWith("http")
+            ? items.image[0]
+            : `http://localhost:3000/uploads/${items.image[0]}`
+  } alt={items.name} />
             <div><p>name:</p><p>{items && items.name}</p></div>
             <div><p>price:</p> <p>{items && items.price}</p></div>
             <div><p>stock:</p><p>{items && items.stock}</p></div>
+             
           </div>
         ))
       }
@@ -80,7 +123,7 @@ const Dashboard = () => {
     ></div>
 
     <div className="add-modal">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
 
         <div
           className="close"
