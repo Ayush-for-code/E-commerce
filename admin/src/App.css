@@ -123,7 +123,17 @@ body{
    overflow-y: auto;
   overflow-x: hidden;
 }
+.products-m{
+
+  display: flex;
+}
+.products-m .heading{
+ 
+  margin-left:40px;
+}
+
 .products {
+ min-width: 100wh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -134,15 +144,16 @@ body{
 .product{
   position: relative;
   background: #f3f4f6;
-  padding: 18px;
-  min-width: 300px;
+  padding: 20px;
+  min-width: 400px;
   border-radius: 14px;
   margin-bottom: 18px;
   font-size: 20px;
   color: #111827;
 }
 .product img{
-  max-height: 60px;
+  object-fit: cover;
+  max-height: 130px;
 }
 .product div{
   display: flex;
@@ -348,5 +359,45 @@ form{
   .description-field,
   .add-modal button {
     grid-column: span 1;
+  }
+}
+
+/* design for skeleton laoding */
+.skeleton-card {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  justify-content: center;
+  margin:20px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+.skeleton-card div{
+  display: flex;
+  flex-direction: column;
+   gap: 12px;
+  padding: 18px;
+  margin-left:12px ;
+ 
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 25%,
+    #f3f4f6 50%,
+    #e5e7eb 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
   }
 }

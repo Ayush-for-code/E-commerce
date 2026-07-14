@@ -4,6 +4,7 @@ import { useState ,useEffect} from 'react'
 import { useDispatch, useSelector} from 'react-redux'
 import { getProduct,addProduct } from '../state/reducers/productReducer'
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import Skeleton from "../components/Skeleton"
 
 
 
@@ -72,6 +73,7 @@ const Dashboard = () => {
     <div>
       <h2>Dashboard</h2>
       <p>manage your store efficently</p>
+      
     </div>
 
     <div className="add-product" onClick={()=>setOpen(true)}>

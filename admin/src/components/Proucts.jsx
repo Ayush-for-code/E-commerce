@@ -2,6 +2,7 @@ import React, { useState ,useEffect} from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { updateProuduct,getProduct,deleteProduct} from "../state/reducers/productReducer";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import SkeletonCard from "./SkeletonCard";
 
 const Products = () => {
   const [edit, setEdit] = useState(false);
@@ -201,8 +202,19 @@ useEffect(()=>{
               </>
             )}
 
-            {/* Products */}
+          
+          </div>
+        </div>
+      </div>
+        {/* Products */}
+            {
+              <div className="products">
+                <SkeletonCard/>
+              </div>
+            }
+           
             <div className="products">
+             
               {products.map((item) => (
                 <div className="product" key={item._id}>
                   <div
@@ -247,9 +259,6 @@ useEffect(()=>{
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

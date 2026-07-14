@@ -4,6 +4,7 @@ import { fetchProduct,fetchSingleProduct } from "../state/reducers/productSlice"
 import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component"
 import Product from "./Product";
+import SkeletonCard from "./SkeletonCard";
 
 const Items = () => {
   const dispatch = useDispatch();
@@ -26,33 +27,48 @@ const Items = () => {
     dispatch(fetchProduct({page:1}));
   }, [dispatch, query, category]); // 🔑 re-fetch on search change
 
-  if (loading && page === 1) return <h2>Loading products...</h2>;
+
   if (error) return <h2>Error: {error}</h2>;
 
   return (
     <>
-     <InfiniteScroll
-    dataLength={product.length}
-    next={fetchMoreData}
-    hasMore={hasMore}
-    loader={<h4>Loading...</h4>}
-  >
-    <div className="items">
-      {Array.isArray(product) &&product.map((item) => (
-      <Link to={`/overview/${item._id}`} className="overview" key={item._id} onClick={()=>{getProduct(item._id)}}> 
-       <Product
-         
-          name={item.name}
-          price={item.price}
-          description={item.description}
-          category={item.category}
-          image={ item.image[0].startsWith("http")
-            ? item.image[0]
-            : `http://localhost:3000/uploads/${item.image[0]}`}
-        /></Link>
-      ))}
-    </div>
-  </InfiniteScroll>
+    {loading && page === 1 ? (
+      <div className="items">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+      </div>
+    ) : (
+      <InfiniteScroll
+        dataLength={product.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={<SkeletonCard />}
+      >
+        <div className="items">
+          {product.map((item) => (
+            <Link
+              key={item._id}
+              to={`/overview/${item._id}`}
+              className="overview"
+              onClick={() => getProduct(item._id)}
+            >
+              <Product
+                name={item.name}
+                price={item.price}
+                description={item.description}
+                category={item.category}
+                image={
+                  item.image[0].startsWith("http")
+                    ? item.image[0]
+                    : `http://localhost:3000/uploads/${item.image[0]}`
+                }
+              />
+            </Link>
+          ))}
+        </div>
+      </InfiniteScroll>
+    )}
     
     </>
     
