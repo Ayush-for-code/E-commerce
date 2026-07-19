@@ -56,7 +56,9 @@ const Items = () => {
               <Product
                 name={item.name}
                 price={item.price}
-                description={item.description}
+                description={  item.description.length > 35
+    ? item.description.slice(0, 35) + "..."
+    : item.description}
                 category={item.category}
                 image={
                   item.image[0].startsWith("http")

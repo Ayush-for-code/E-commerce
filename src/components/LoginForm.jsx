@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import {Link,useNavigate} from "react-router-dom"
 
 const LoginForm = () => {
     const [user,setUser] = useState({email:"",password:""});
+    const navigate = useNavigate();
      const handleToast = async (e)=>{
     e.preventDefault()
     const notify = () =>
@@ -32,7 +34,7 @@ const LoginForm = () => {
           }
  
             notify()
-
+         navigate("/")
          }
          catch(err){
           const notify = () =>
@@ -75,6 +77,7 @@ const LoginForm = () => {
         <input type="password" name="password" id="" placeholder='password' onChange={onChange}/>
         <input type="submit" value="sumbit" />
       </form>
+      <Link to="/signup">signup</Link>if not have a account
     </div>
   )
 }

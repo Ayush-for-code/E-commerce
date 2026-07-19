@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { setQuery } from "../state/reducers/productSlice";
@@ -9,11 +9,16 @@ import { setQuery } from "../state/reducers/productSlice";
 function Navbar(props) {
 
 const [input,setinput] = useState("")
+const navigate = useNavigate();
 
 const query = useSelector(state=>state.query)
   const [activeMenu, setActiveMenu] = useState(null)
 
 const dispatch = useDispatch();
+const logOut = ()=>{
+  localStorage.removeItem("auth-token");
+  navigate("/login")
+}
 
 const handleSubmit = (e)=>{
   e.preventDefault()
@@ -40,6 +45,7 @@ const handleSubmit = (e)=>{
         <h3> <Link to="/address">Address</Link></h3>
         <h3> <Link to ="/login">Login</Link></h3>
         <h3><Link to ="/signup">signup</Link></h3>
+        <h3 onClick={logOut}><Link>Logout</Link></h3>
         <h3><a href="http://localhost:5174" target="_blank">Admin</a></h3>
          
      

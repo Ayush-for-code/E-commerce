@@ -2,12 +2,15 @@ import React from "react";
 import { useState } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signform = () => {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
 
   //fuction for handle submit after fecting data
   //saving input data
+const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const notify = () =>
@@ -44,6 +47,7 @@ const Signform = () => {
         localStorage.setItem("auth-token", json.authtoken);
       }
       notify();
+      navigate("/login")
     } catch (err) {
        const notify = () =>
       toast.error("failed to created a user", {

@@ -7,6 +7,7 @@ import SkeletonCard from "./SkeletonCard";
 const Products = () => {
   const [edit, setEdit] = useState(false);
   const [id,setId] = useState("");
+  const [open , setOpen] = useState(false);
 
   const [input, setInput] = useState({
     name: "",
@@ -18,9 +19,9 @@ const Products = () => {
     description: "",
   });
 
-  const { products } = useSelector((state) => state.product);
+  const { products,loading } = useSelector((state) => state.product);
   const dispatch = useDispatch()
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     await dispatch(updateProuduct({id,updateData:input}))
@@ -82,7 +83,7 @@ const handleEdit = (item)=>{
 
 
 useEffect(()=>{
-  
+ dispatch(getProduct())
 },[dispatch])
 
   return (
@@ -201,19 +202,27 @@ useEffect(()=>{
                 </div>
               </>
             )}
-
           
           </div>
         </div>
       </div>
         {/* Products */}
-            {
+            {/* {
               <div className="products">
                 <SkeletonCard/>
               </div>
-            }
+            } */}
            
-            <div className="products">
+        {loading ?(
+        <div className="products">
+          {Array.from({length:6}).map((_,index)=>(
+              <SkeletonCard key={index}/>
+          ))}
+        </div>
+            
+          
+        ) :
+              <div className="products">
              
               {products.map((item) => (
                 <div className="product" key={item._id}>
@@ -256,9 +265,11 @@ useEffect(()=>{
                     <p>Stock:</p>
                     <p>{item.stock}</p>
                   </div>
+                  
                 </div>
               ))}
             </div>
+        }
     </>
   );
 };
