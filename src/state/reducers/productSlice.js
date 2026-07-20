@@ -19,7 +19,6 @@ export const fetchProduct = createAsyncThunk(
       if (!res.ok) {
         throw new Error("Failed to fetch products");
       }
-
       const data = await res.json();
 
       // ✅ return ONLY array
