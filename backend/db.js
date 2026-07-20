@@ -1,6 +1,6 @@
 //db.js
 const mongoose = require("mongoose");
-const mongoURI = "mongodb://localhost:27017/e-commerce";
+const mongoURI = `mongodb://ayushbhardwajgdr_db_user:${process.env.MONGOPASS}@ac-enybdfd-shard-00-00.kyujmbj.mongodb.net:27017,ac-enybdfd-shard-00-01.kyujmbj.mongodb.net:27017,ac-enybdfd-shard-00-02.kyujmbj.mongodb.net:27017/e-commerce?ssl=true&replicaSet=atlas-z99pm1-shard-0&authSource=admin&appName=e-commerce`;
 
 const connectToMongo = ()=>{
     mongoose.connect(mongoURI)
