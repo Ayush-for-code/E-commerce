@@ -6,7 +6,7 @@ export const fetchAddress = createAsyncThunk(
   "address/fetchAddress",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:3000/api/address/get", {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/get`, {
         method: "GET",
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
@@ -25,7 +25,7 @@ export const createAddress = createAsyncThunk(
   "address/createAddress",
   async (addressData, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:3000/api/address/add", {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const deleteAddress = createAsyncThunk(
   async (addressId, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/address/remove/${addressId}`,
+        `${import.meta.env.VITE_RENDERURI}/api/address/remove/${addressId}`,
         {
           method: "DELETE",
           headers: {
@@ -77,7 +77,7 @@ export const updateAddress = createAsyncThunk(
   async ({ id, addressData }, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/address/update/${id}`,
+        `${import.meta.env.VITE_RENDERURI}/api/address/update/${id}`,
         {
           method: "PUT",
           headers: {
@@ -105,7 +105,7 @@ export const setDefaultAddress = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/address/setDefault/${id}`,
+        `${import.meta.env.VITE_RENDERURI}/api/address/setDefault/${id}`,
         {
           method: "POST",
           headers: {
@@ -131,7 +131,7 @@ export const fetchDefaultAddress = createAsyncThunk(
   "address/fetchDefaultAddress",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:3000/api/address/setDefault", {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/setDefault`, {
         method: "POST",
         header: {
           "Content-Type": "application/json",

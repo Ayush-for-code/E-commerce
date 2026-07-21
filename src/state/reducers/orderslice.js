@@ -4,7 +4,7 @@ export const createOrder = createAsyncThunk(
   "order/createOrder",
   async ({ id, qty }, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/order/create`, {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/order/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -37,7 +37,7 @@ export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/order/get`, {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/order/get`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

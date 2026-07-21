@@ -21,7 +21,7 @@ const LoginForm = () => {
               transition: Bounce,
             });
          try{
-          const res = await axios.post("http://localhost:3000/api/auth/login",{email:user.email,password:user.password},{
+          const res = await axios.post(`${import.meta.env.VITE_RENDERURI}/api/auth/login`,{email:user.email,password:user.password},{
             headers:{
              "Content-Type":"application/json"
             }

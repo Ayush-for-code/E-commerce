@@ -4,7 +4,7 @@ export const addProduct = createAsyncThunk("product/addProduct",
     async(productData,{rejectWithValue})=>{
      try{
       console.log("productdata",productData)
-       const res = await fetch("http://localhost:3000/api/product/create",{
+       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/create`,{
         method :"POST",
         headers:{
           "auth-token":localStorage.getItem("auth-token")
@@ -21,12 +21,11 @@ export const addProduct = createAsyncThunk("product/addProduct",
      catch(err){
        return rejectWithValue(err.message);
      }
-
 });
 
 export const getProduct = createAsyncThunk("product/getProduct",async(_,{rejectWithValue})=>{
 try{
-  const res = await fetch("http://localhost:3000/api/product/get");
+  const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/get`);
  const data = await res.json();
  console.log(data);
  if(!data.success){
@@ -41,7 +40,7 @@ catch(err){
 })
 export const updateProuduct = createAsyncThunk("product/updateProuct", async({id,updateData},{rejectWithValue})=>{
   try{
-   const res = await fetch(`http://localhost:3000/api/product/update/${id}`,{
+   const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/update/${id}`,{
     method:"PUT",
     headers:{
         "Content-type": "application/json",
@@ -62,7 +61,7 @@ export const updateProuduct = createAsyncThunk("product/updateProuct", async({id
  
 export const deleteProduct = createAsyncThunk("product/deleteProduct",async(id,{rejectWithValue})=>{
  try{
- const res = await fetch(`http://localhost:3000/api/product/remove/${id}`,{
+ const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/remove/${id}`,{
     method:"DELETE",
     headers:{
       "Content-Type":"application/json",

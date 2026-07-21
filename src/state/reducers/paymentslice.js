@@ -4,7 +4,7 @@ export const createPayment = createAsyncThunk(
   "payment/createPayment",
   async (id, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:3000/api/payment/create", {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/payment/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -31,7 +31,7 @@ export const verifyPayment = createAsyncThunk(
   async (response, { rejectWithValue }) => {
     try {
       
-      const res = await fetch("http://localhost:3000/api/payment/verify", {
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/payment/verify`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

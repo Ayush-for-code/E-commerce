@@ -13,7 +13,7 @@ export const fetchProduct = createAsyncThunk(
       params.append("page",page);
 
       const res = await fetch(
-        `http://localhost:3000/api/filter?${params.toString()}`,
+        `${import.meta.env.VITE_RENDERURI}/api/filter?${params.toString()}`,
       );
 
       if (!res.ok) {
@@ -36,7 +36,7 @@ export const fetchSingleProduct = createAsyncThunk(
   "product/fetchSingleProduct",
   async (id, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/product/single/${id}`);
+      const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/single/${id}`);
       const data = await res.json();
 
       if (!res.ok) {

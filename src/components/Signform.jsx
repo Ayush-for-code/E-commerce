@@ -27,7 +27,7 @@ const navigate = useNavigate();
       });
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/createuser",
+        `${import.meta.env.VITE_RENDERURI}/api/auth/createuser`,
         {
           name: user.name,
           email: user.email,
