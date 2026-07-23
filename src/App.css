@@ -427,3 +427,138 @@ span svg {
     background-position: -200% 0;
   }
 }
+
+/* ==========================
+   Mobile Responsive Design
+========================== */
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar {
+    min-width: 100%;
+    height: auto;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .navbar h2 {
+    font-size: 24px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .navbar a {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .search-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .search-btn,
+  .filter-btn {
+    width: 100%;
+  }
+
+  /* Product Cards */
+  .items {
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .product-container {
+    min-width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+  }
+
+  .product-image {
+    min-width: 100%;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+  }
+
+  /* Overview */
+  .overview-container {
+    padding: 10px;
+  }
+
+  .overview-card {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .image-slider {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: auto;
+  }
+
+  .image-slider img {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: auto;
+  }
+
+  /* Login */
+  .login form {
+    width: 95%;
+    min-width: unset;
+    max-width: unset;
+    padding: 25px;
+  }
+
+  /* Address Form */
+  .form {
+    width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .form input,
+  .form select {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Address Card */
+  .add-card {
+    min-width: 100%;
+    margin: 10px 0;
+  }
+
+  /* Orders */
+  .orders {
+    width: 95%;
+  }
+
+  /* Side Menus */
+  .settings-menu,
+  .filter-menu {
+    width: 260px;
+  }
+
+  /* Skeleton */
+  .skeleton-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
