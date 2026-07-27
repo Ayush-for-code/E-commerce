@@ -24,7 +24,7 @@ export const createOrder = createAsyncThunk(
       const data = await res.json();
       console.log(data);
       if (!res.ok) {
-        return rejectWithValue(data.message);
+        return rejectWithValue(data);
       }
       return data;
     } catch (error) {

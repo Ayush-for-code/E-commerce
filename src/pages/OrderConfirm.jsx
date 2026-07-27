@@ -11,7 +11,6 @@ import { createPayment,verifyPayment } from "../state/reducers/paymentslice"
 const OrderConfirm = () => {
 
   const { singleProduct } = useSelector((state) => state.product);
-  const navigate = useNavigate();
   // const {address} = useSelector((state)=> state.addresses);
   const {payment} = useSelector((state)=> state.payment);
   const navigate = useNavigate()
@@ -34,10 +33,9 @@ const OrderConfirm = () => {
     const paymentResult = await dispatch(createPayment(id));
      const orderResult = await dispatch(createOrder({ id, qty }));
 
-   if(orderResult.error || !orderResult.payload?.success){
-     navigate("/address");
-   }
-
+if (!orderResult.payload.success) {
+    navigate("/address");
+}
     if (!paymentResult.payload || paymentResult.error) {
       console.error("Payment creation failed");
       return;
