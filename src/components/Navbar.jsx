@@ -42,9 +42,9 @@ const handleSubmit = (e)=>{
   <div className="close"onClick={() => setActiveMenu(null)}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5e5c5c"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
 </div>
       <div className="setting-options">
-        <h3> <Link to="/address">Address</Link></h3>
-        <h3> <Link to ="/login">Login</Link></h3>
-        <h3><Link to ="/signup">signup</Link></h3>
+        <h3> <Link to="/address" onClick={()=> setActiveMenu(null)}>Address</Link></h3>
+        <h3> <Link to ="/login"onClick={()=> setActiveMenu(null)} >Login</Link></h3>
+        <h3><Link to ="/signup" onClick={()=> setActiveMenu(null)}>signup</Link></h3>
         <h3 onClick={logOut}><Link>Logout</Link></h3>
         <h3><a href="http://localhost:5174" target="_blank">Admin</a></h3>
          
