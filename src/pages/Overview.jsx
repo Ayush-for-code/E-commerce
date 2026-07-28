@@ -45,7 +45,7 @@ if (!singleProduct) {
 
         <img src={  singleProduct.image[0].startsWith("http")
                     ? singleProduct.image
-                    : `http://localhost:3000/uploads/${singleProduct.image[0]}`} alt="product" />
+                    : `${import.meta.env.VITE_RENDERURI}/uploads/${singleProduct.image[0]}`} alt="product" />
 
         <button onClick={nextImage}>▶</button>
       </div>

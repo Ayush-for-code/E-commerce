@@ -63,7 +63,7 @@ const Items = () => {
                 image={
                   item.image[0].startsWith("http")
                     ? item.image[0]
-                    : `http://localhost:3000/uploads/${item.image[0]}`
+                    : `${import.meta.env.VITE_RENDERURI}/uploads/${item.image[0]}`
                 }
               />
             </Link>

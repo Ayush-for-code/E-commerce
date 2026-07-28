@@ -103,7 +103,7 @@ const Dashboard = () => {
             <img src={
      items.image[0].startsWith("http")
             ? items.image[0]
-            : `http://localhost:3000/uploads/${items.image[0]}`
+            : `${import.meta.env.VITE_RENDERURI}/uploads/${items.image[0]}`
   } alt={items.name} />
             <div><p>name:</p><p>{items && items.name}</p></div>
             <div><p>price:</p> <p>{items && items.price}</p></div>
