@@ -39,9 +39,8 @@ const paymentResult = await dispatch(createPayment(id));
     if (!paymentResult.payload || paymentResult.error) {
       console.error("Payment creation failed");
       return;
-    }
-
-    const order = paymentResult.payload.order;
+    }else{
+ const order = paymentResult.payload.order;
 
     if (!window.Razorpay) {
       alert("Razorpay SDK not loaded");
@@ -71,6 +70,9 @@ const paymentResult = await dispatch(createPayment(id));
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
 
+    }
+
+   
   } catch (err) {
     console.error(err);
    
