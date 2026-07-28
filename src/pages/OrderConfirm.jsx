@@ -30,12 +30,12 @@ const OrderConfirm = () => {
   const confirmOrder = async () => {
   try {
 
-    const paymentResult = await dispatch(createPayment(id));
      const orderResult = await dispatch(createOrder({ id, qty }));
 
 if (!orderResult.payload.success) {
     navigate("/address");
 }
+const paymentResult = await dispatch(createPayment(id));
     if (!paymentResult.payload || paymentResult.error) {
       console.error("Payment creation failed");
       return;
