@@ -24,53 +24,58 @@ const OrderConfirm = () => {
 
   //function for confirm order by getting order Id from createOrder Slice and run handerler function for verify
 
-  const confirmOrder = async () => {
-    try {
-      const orderResult = await dispatch(createOrder({ id, qty }));
+ const confirmOrder = async () => {
+  try {
+    const orderResult = await dispatch(createOrder({ id, qty }));
 
-      if (!orderResult.payload.success) {
-        navigate("/address");
-      }
-        const paymentResult = await dispatch(createPayment(id));
-      if (!paymentResult.payload || paymentResult.error) {
-        console.error("Payment creation failed");
-        return;
-      } else {
-      
-        const order = paymentResult.payload.order;
+    if (!orderResult.payload?.success) {
+      navigate("/address");
+      return; // Stop here
+    }
+    else{
+      const paymentResult = await dispatch(createPayment(id));
 
-        if (!window.Razorpay) {
-          alert("Razorpay SDK not loaded");
-          return;
+    if (!paymentResult.payload || paymentResult.error) {
+      console.error("Payment creation failed");
+      return;
+    }
+
+    const order = paymentResult.payload.order;
+
+    if (!window.Razorpay) {
+      alert("Razorpay SDK not loaded");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_SQc4XgiRWHRCAA",
+      amount: order.amount,
+      currency: "INR",
+      order_id: order.id,
+
+      handler: async function (response) {
+        const verifyResult = await dispatch(verifyPayment(response));
+
+        if (verifyResult.payload?.success) {
+          console.log("Payment verified");
+        } else {
+          console.error("Verification failed");
         }
 
-        const options = {
-          key: "rzp_test_SQc4XgiRWHRCAA",
-          amount: order.amount,
-          currency: "INR",
-          order_id: order.id,
+        navigate("/");
+      },
+    };
 
-          handler: async function (response) {
-            const verifyResult = await dispatch(verifyPayment(response));
-            console.log(verifyResult);
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
 
-            if (verifyResult.payload?.success) {
-              console.log("Payment verified");
-            } else {
-              console.error("Verification failed");
-            }
-            navigate("/");
-          },
-        };
-
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
-      }
-    } catch (err) {
-      console.error(err);
     }
-  };
 
+    
+  } catch (err) {
+    console.error(err);
+  }
+};
   useEffect(() => {
     if (id) {
       dispatch(fetchSingleProduct(id));
