@@ -26,27 +26,42 @@ const OrderConfirm = () => {
 
  const confirmOrder = async () => {
   try {
+    // Step 1: Create order
     const orderResult = await dispatch(createOrder({ id, qty }));
 
-    if (!orderResult.payload?.success) {
-      navigate("/address");
-      return; // Stop here
-    }
-    else{
-      const paymentResult = await dispatch(createPayment(id));
+    console.log("Order Result:", orderResult);
 
-    if (!paymentResult.payload || paymentResult.error) {
+    // Stop if order creation failed
+    if (
+      orderResult.meta?.requestStatus === "rejected" ||
+      !orderResult.payload?.success
+    ) {
+      navigate("/address");
+      return;
+    }
+
+    // Step 2: Create payment order
+    const paymentResult = await dispatch(createPayment(id));
+
+    console.log("Payment Result:", paymentResult);
+
+    if (
+      paymentResult.meta?.requestStatus === "rejected" ||
+      !paymentResult.payload
+    ) {
       console.error("Payment creation failed");
       return;
     }
 
     const order = paymentResult.payload.order;
 
+    // Step 3: Check Razorpay SDK
     if (!window.Razorpay) {
       alert("Razorpay SDK not loaded");
       return;
     }
 
+    // Step 4: Open Razorpay
     const options = {
       key: "rzp_test_SQc4XgiRWHRCAA",
       amount: order.amount,
@@ -54,26 +69,26 @@ const OrderConfirm = () => {
       order_id: order.id,
 
       handler: async function (response) {
-        const verifyResult = await dispatch(verifyPayment(response));
+        try {
+          const verifyResult = await dispatch(verifyPayment(response));
 
-        if (verifyResult.payload?.success) {
-          console.log("Payment verified");
-        } else {
-          console.error("Verification failed");
+          if (verifyResult.payload?.success) {
+            console.log("Payment verified");
+            navigate("/");
+          } else {
+            console.error("Payment verification failed");
+          }
+        } catch (err) {
+          console.error(err);
         }
-
-        navigate("/");
       },
     };
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
 
-    }
-
-    
   } catch (err) {
-    console.error(err);
+    console.error("Confirm Order Error:", err);
   }
 };
   useEffect(() => {

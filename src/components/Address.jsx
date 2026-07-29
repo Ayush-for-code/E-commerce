@@ -55,8 +55,16 @@ const Address = () => {
     console.log(address);
   };
   const handleInput = (e) => {
-    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const { name, value } = e.target;
+
+  if (name === "phoneNo" && value.length > 10) return;
+  if (name === "pincode" && value.length > 6) return;
+
+  setInput((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
   const handleEdit = (item) => {
     setInput(item);
     setOpen(true);
@@ -93,7 +101,7 @@ dispatch(setDefaultAddress(item._id))
            value={input.phoneNo}
             placeholder="PhoneNO"
             onChange={handleInput}
-            max={10}
+            maxLength={10}
           />
           <input
             type="text"
@@ -143,7 +151,7 @@ dispatch(setDefaultAddress(item._id))
             type="number"
             name="pincode"
             id="pincode"
-            max={6}
+            maxLength={6}
             value={input.pincode}
             placeholder="Pincode"
             onChange={handleInput}
