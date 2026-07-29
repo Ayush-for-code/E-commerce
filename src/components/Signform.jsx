@@ -96,7 +96,7 @@ const navigate = useNavigate();
           type="text"
           name="email"
           id="email"
-          placeholder="usernsme"
+          placeholder="email"
           onChange={onChange}
         />
         <input

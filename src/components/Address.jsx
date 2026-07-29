@@ -93,6 +93,7 @@ dispatch(setDefaultAddress(item._id))
            value={input.phoneNo}
             placeholder="PhoneNO"
             onChange={handleInput}
+            max={10}
           />
           <input
             type="text"
@@ -142,7 +143,7 @@ dispatch(setDefaultAddress(item._id))
             type="number"
             name="pincode"
             id="pincode"
-            maxLength={6}
+            max={6}
             value={input.pincode}
             placeholder="Pincode"
             onChange={handleInput}
