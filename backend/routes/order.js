@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const fetchUser = require("../middleware/fetchuser");
+const fetchUser = require("../middleware/clerkmiddleWare");
 
 const {createOrder,cancleOrder,getUserOrder,updateUserStatus,confirmOrder}= require("../controller/ordercontroller");
 

@@ -1,10 +1,20 @@
 const Products = require("../modals/Product");
 const Order = require("../modals/Order");
 const Address = require("../modals/Address")
+const ClerkUser = require("../modals/ClerkUser");
 
 exports.createOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({ clerkId });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const userId = user._id;
     const {items} = req.body;
 
     if (!items || items.length === 0) {
@@ -95,7 +105,16 @@ if(!defaultAddress){
 
 exports.getUserOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({ clerkId });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const userId = user._id;
     //this find all order which belongs to the user
     const orders = await Order.find({ userId });
     if (!orders || orders.length === 0) {
@@ -112,7 +131,16 @@ exports.updateUserStatus = async (req, res) => {};
 // this is endpoint for cancle order
 exports.cancleOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({ clerkId });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const userId = user._id;
     const { orderId } = req.body;
     if (!orderId) {
       return res
@@ -140,7 +168,16 @@ exports.cancleOrder = async (req, res) => {
 //this is endpoint for confirm user order
 exports.confirmOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({ clerkId });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const userId = user._id;
     const { orderId } = req.body;
     const order = await Order.findOne({ _id: orderId, userId });
     if (!order) {

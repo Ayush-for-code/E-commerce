@@ -1,8 +1,14 @@
 const Address = require("../modals/Address");
+const ClerkUser = require("../modals/ClerkUser");
 
 exports.addAddress = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
     const { name, phoneNo, addressLine, state, city, pincode, landmark, country } = req.body;
 
     if (!name || !phoneNo || !addressLine || !state || !city || !pincode || !country) {
@@ -55,7 +61,12 @@ exports.addAddress = async (req, res) => {
 //endpoint for getting all address
 exports.getAddress = async(req,res)=>{
  try{
-     const userId = req.user.id;
+       const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
     
   const addressDoc = await Address.findOne({userId});
   if(!addressDoc || addressDoc.addresses.length === 0){
@@ -70,7 +81,12 @@ exports.getAddress = async(req,res)=>{
 //enidpoint for updating address
 exports.updateAddress = async (req, res) => {
   try {
-    const userId = req.user.id;
+     const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
     const addressId = req.params.addressId;
 
     if (!addressId) {
@@ -137,7 +153,12 @@ exports.updateAddress = async (req, res) => {
 //this is endpoint for removing address
 exports.removeAddress = async(req,res)=>{
 try{
-    const userId = req.user.id;
+      const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
     const addressId = req.params.addressId
    
     if(!addressId){
@@ -167,7 +188,12 @@ catch(err){
 }
 exports.setDefaultAddress = async(req,res)=>{
 try{
-    const userId = req.user.id;
+      const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
 const addressId = req.params.addressId;
 const addressDoc = await Address.findOne({userId});
 
@@ -199,7 +225,12 @@ catch(err){
 // Endpoint to remove default flag from an address
 exports.removeDefaultAddress = async (req, res) => {
   try {
-    const userId = req.user.id;
+      const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
     const addressId = req.params.addressId;
 
     const addressDoc = await Address.findOne({ userId });
@@ -250,8 +281,12 @@ exports.removeDefaultAddress = async (req, res) => {
 //this is a endpoint for fetch only users default address
 exports.fetchDefaultAddress= async (req,res)=>{
 try{
-   const userId = req.user.id;
- 
+    const clerkId = req.auth.userId;
+    const user = await ClerkUser.findOne({clerkId});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
+    }
+    const userId = user._id;
  const addressDoc = await Address.findOne({userId});
  if(!addressDoc || addressDoc.addresses.length === 0 ){
   return res.status(404).json({success:false,message:"address not found"});

@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const fetchUser = require("../middleware/fetchuser")
+const requireAuth = require("../middleware/clerkmiddleWare")
 const {addAddress,getAddress,updateAddress,removeAddress,setDefaultAddress,removeDefaultAddress,fetchDefaultAddress} = require("../controller/addresscontroller");
 
-router.post("/add",fetchUser,addAddress);
-router.get("/get",fetchUser,getAddress);
-router.put("/update/:addressId",fetchUser,updateAddress);
-router.delete("/remove/:addressId",fetchUser,removeAddress);
-router.post("/setDefault/:addressId",fetchUser,setDefaultAddress);
-router.post("/removeDefault/:addressId",fetchUser,removeDefaultAddress);
-router.post("/fetchDefault",fetchUser,fetchDefaultAddress)
+router.post("/add",requireAuth,addAddress);
+router.get("/get",requireAuth,getAddress);
+router.put("/update/:addressId",requireAuth,updateAddress);
+router.delete("/remove/:addressId",requireAuth,removeAddress);
+router.post("/setDefault/:addressId",requireAuth,setDefaultAddress);
+router.post("/removeDefault/:addressId",requireAuth,removeDefaultAddress);
+router.post("/fetchDefault",requireAuth,fetchDefaultAddress)
 
 
 

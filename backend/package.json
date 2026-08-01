@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/express": "^2.1.48",
+    "@clerk/react": "^6.12.9",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
@@ -21,6 +23,7 @@
     "multer": "^2.2.0",
     "nodemon": "^3.1.11",
     "razorpay": "^2.9.6",
+    "svix": "^1.99.1",
     "validator": "^13.15.23"
   }
 }
