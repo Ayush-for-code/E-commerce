@@ -5,6 +5,10 @@ require("dotenv").config({ path: __dirname + "/.env" });
 
 const connectToMongo = require("./db");
 const { clerkMiddleware } = require("@clerk/express");
+console.log(
+  "CLERK SECRET:",
+  process.env.CLERK_SECRET_KEY ? "LOADED" : "NOT LOADED"
+);
 
 // =============================
 // Connect MongoDB
@@ -18,7 +22,12 @@ const PORT = process.env.PORT || 3000;
 // Enable CORS
 // Allows frontend to access backend
 // =============================
-app.use(cors());
+app.use(cors(
+  {
+    origin: "http://localhost:5173",
+    credentials: true,
+  }
+));
 
 // =============================
 // Clerk Webhook
@@ -56,6 +65,7 @@ app.use("/api/order", require("./routes/order"));
 app.use("/api/address", require("./routes/addressRoute"));
 app.use("/api/payment", require("./routes/paymentRoute"));
 app.use("/api", require("./routes/filter"));
+app.use("/api/user", require("./routes/user"));
 
 // =============================
 // Static Upload Folder

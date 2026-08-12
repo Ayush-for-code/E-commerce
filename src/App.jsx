@@ -16,15 +16,15 @@ import Payment from './pages/Payment';
 import ProtectRoute from './components/ProtectRoute';
 
 function App() {
-const auth = localStorage.getItem("auth-token")
+
   return (
     <> <Router>
       
       <Navbar />
       <Routes>
-        <Route path="/" element={<ProtectRoute>
+        <Route path="/" element={
           <Items/>
-        </ProtectRoute>} />
+        } />
         <Route path="/orders" element={<ProtectRoute>
           <Orders />
         </ProtectRoute>} />
@@ -38,7 +38,6 @@ const auth = localStorage.getItem("auth-token")
          <Order/>
         </ProtectRoute>} />
         <Route path="/login" element={<Login/>} />
-        <Route path="/signup" element={<Signup/>} />
         <Route path="/overview/:id" element={<ProtectRoute>
          <Overview/>
         </ProtectRoute>}/>

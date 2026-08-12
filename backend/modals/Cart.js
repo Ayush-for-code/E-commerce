@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const CartSchema = new mongoose.Schema({
     userId:{
        type:mongoose.Schema.Types.ObjectId,
-       ref:"User",
+       ref:"Clerk",
        required:true
     },
     items:[{
@@ -23,6 +23,8 @@ const CartSchema = new mongoose.Schema({
         default:Date.now
     }
 
+},{
+   timestamps:true,
 });
 
 const Cart = mongoose.model("Cart",CartSchema);

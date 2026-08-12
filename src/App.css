@@ -25,7 +25,22 @@ body button {
 
   justify-content: space-between;
   padding: 15px;
-  background: rgb(46, 45, 45);
+  background:rgb(40, 46, 51)
+}
+.logo-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-container svg{
+ margin-top:-7px;
+ margin-right: 5px;
+
+}
+.navbar .logo{
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .navbar a {
@@ -85,6 +100,8 @@ body button {
   border-radius: 5px;
 }
 .filter-btn {
+  margin-top: 16px;
+  margin-left: 5px;
   cursor: pointer;
 }
 .search-btn {
@@ -158,6 +175,7 @@ span svg {
 }
 
 .setting svg {
+  margin-top:7px;
   cursor: pointer;
   fill: grey;
 }
@@ -227,6 +245,20 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .login {
   width: 70%;
+  
+}
+.login div button{
+  padding:8px 15px;
+  border-radius:8px;
+  outline:none;
+  border:none;
+  margin:10px;
+  transition: all 0.1s linear;
+}
+.login div button:hover{
+  cursor: pointer;
+  background-color: black;
+  color: white;
 }
 .login form {
   display: flex;
@@ -459,12 +491,12 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .navbar a {
-    margin: 0;
+    margin-left: 5px;
     font-size: 15px;
   }
 
   .search-container {
-    width: 100%;
+    min-width: 100%;
     flex-direction: column;
     gap: 10px;
   }

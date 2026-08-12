@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/react": "^6.13.1",
     "@react-login-page/page5": "^1.0.6",
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.3",

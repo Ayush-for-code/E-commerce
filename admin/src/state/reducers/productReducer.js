@@ -27,11 +27,11 @@ export const getProduct = createAsyncThunk("product/getProduct",async(_,{rejectW
 try{
   const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/get`);
  const data = await res.json();
- console.log(data);
+ console.log(`products are here ${data}`);
  if(!data.success){
   return rejectWithValue(data.messsage)
  }
- console.log(data.products)
+ console.log("products",data.products)
  return data.products
 }
 catch(err){

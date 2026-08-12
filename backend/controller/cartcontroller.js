@@ -145,11 +145,11 @@ exports.updateItem = async (req, res) => {
     const clerkId = req.auth.userId;
     const user = await ClerkUser.findOne({ clerkId });
     if (!user) {
-  return res.status(404).json({
-    success: false,
-    message: "User not found",
-  });
-}
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     const userId = user._id;
     const { productId, quantity } = req.body;
@@ -213,9 +213,7 @@ exports.increaseQuantity = async (req, res) => {
     }
 
     // Find item inside cart
-    const item = cart.items.find(
-      (i) => i.productId.toString() === productId
-    );
+    const item = cart.items.find((i) => i.productId.toString() === productId);
 
     if (!item) {
       return res.status(404).json({
@@ -253,7 +251,6 @@ exports.increaseQuantity = async (req, res) => {
       message: "Quantity increased successfully",
       cart,
     });
-
   } catch (err) {
     console.error(err);
 
@@ -290,9 +287,7 @@ exports.decreaseQuantity = async (req, res) => {
     }
 
     // Find the item inside the cart
-    const item = cart.items.find(
-      (i) => i.productId.toString() === productId
-    );
+    const item = cart.items.find((i) => i.productId.toString() === productId);
 
     if (!item) {
       return res.status(404).json({
@@ -307,7 +302,7 @@ exports.decreaseQuantity = async (req, res) => {
     // Remove item if quantity becomes 0
     if (item.quantity <= 0) {
       cart.items = cart.items.filter(
-        (i) => i.productId.toString() !== productId
+        (i) => i.productId.toString() !== productId,
       );
     }
 
@@ -318,7 +313,6 @@ exports.decreaseQuantity = async (req, res) => {
       message: "Quantity updated successfully",
       cart,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -333,11 +327,11 @@ exports.clearCart = async (req, res) => {
     const clerkId = req.auth.userId;
     const user = await ClerkUser.findOne({ clerkId });
     if (!user) {
-  return res.status(404).json({
-    success: false,
-    message: "User not found",
-  });
-}
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     const userId = user._id;
     const cart = await Cart.findOne({ userId });

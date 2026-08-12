@@ -1,64 +1,125 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { ToastContainer, toast, Bounce } from "react-toastify";
-import {Link,useNavigate} from "react-router-dom"
+import {Link,useNavigate,Navigate} from "react-router-dom"
+import { useAuth} from "@clerk/react";
+import {
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/react";
 
 const LoginForm = () => {
     const [user,setUser] = useState({email:"",password:""});
+     const { isLoaded,isSignedIn, getToken } = useAuth();
     const navigate = useNavigate();
-     const handleToast = async (e)=>{
-    e.preventDefault()
-    const notify = () =>
-            toast.success("successfuly login", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-              transition: Bounce,
-            });
-         try{
-          const res = await axios.post(`${import.meta.env.VITE_RENDERURI}/api/auth/login`,{email:user.email,password:user.password},{
-            headers:{
-             "Content-Type":"application/json"
-            }
-          });
-          const json =  res.data;
-          console.log("successfuly login")
-          if(json.success){
-            //after login info get checked then save it to local
-             localStorage.setItem("auth-token",json.authtoken)
-          }
+    if (!isLoaded) {
+  return <div>Loading...</div>;
+}
+   if (isSignedIn) {
+  return <Navigate to="/" replace />;
+}
+    //  const handleToast = async (e)=>{
+    // e.preventDefault()
+    // const notify = () =>
+    //         toast.success("successfuly login", {
+    //           position: "top-center",
+    //           autoClose: 5000,
+    //           hideProgressBar: false,
+    //           closeOnClick: false,
+    //           pauseOnHover: true,
+    //           draggable: true,
+    //           progress: undefined,
+    //           theme: "dark",
+    //           transition: Bounce,
+    //         });
+    //      try{
+    //       const res = await axios.post(`${import.meta.env.VITE_RENDERURI}/api/auth/login`,{email:user.email,password:user.password},{
+    //         headers:{
+    //          "Content-Type":"application/json"
+    //         }
+    //       });
+    //       const json =  res.data;
+    //       console.log("successfuly login")
+    //       if(json.success){
+    //         //after login info get checked then save it to local
+    //          localStorage.setItem("auth-token",json.authtoken)
+    //       }
  
-            notify()
-         navigate("/")
-         }
-         catch(err){
-          const notify = () =>
-            toast.error("login failed", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-              transition: Bounce,
-            });
-          console.error("login denied",err)
-          notify()
-         }
-    }
+    //         notify()
+    //      navigate("/")
+    //      }
+    //      catch(err){
+    //       const notify = () =>
+    //         toast.error("login failed", {
+    //           position: "top-center",
+    //           autoClose: 5000,
+    //           hideProgressBar: false,
+    //           closeOnClick: false,
+    //           pauseOnHover: true,
+    //           draggable: true,
+    //           progress: undefined,
+    //           theme: "dark",
+    //           transition: Bounce,
+    //         });
+    //       console.error("login denied",err)
+    //       notify()
+    //      }
+    // }
+    
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+useEffect(() => {
+  const ClerkOutput = async () => {
+     if (!isLoaded) {
+      return;
+    }
+    if (!isSignedIn) {
+      console.log("User is not signed in");
+      return;
+    }
+
+    try {
+      const token = await getToken();
+
+      console.log("Clerk token received:", !!token);
+
+      const response = await fetch(
+        "https://revocable-defraud-strum.ngrok-free.dev/api/user/me",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
+
+      console.log("Status:", response.status);
+      console.log("Content-Type:", response.headers.get("content-type"));
+
+      const text = await response.text();
+
+      console.log("Raw backend response:", text);
+
+      // Only try JSON if the server actually returned JSON
+      if (response.headers.get("content-type")?.includes("application/json")) {
+        const data = JSON.parse(text);
+        console.log("Backend response:", data);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  ClerkOutput();
+}, [isSignedIn, getToken]);
+
   return (
     <div className='login'>
-    <h2>Login</h2>
+    <h2>Sign in</h2>
       <ToastContainer
               position="top-center"
               autoClose={5000}
@@ -72,12 +133,19 @@ const LoginForm = () => {
               theme="dark"
               transition={Bounce}
             />
-      <form onSubmit={handleToast}>
-        <input type="text" name="email" id="" placeholder='usernsme' onChange={onChange} />
+      {/* <form onSubmit={handleToast}>
+        <input type="text" name="email" id="" placeholder='email' onChange={onChange} />
         <input type="password" name="password" id="" placeholder='password' onChange={onChange}/>
         <input type="submit" value="sumbit" />
-      </form>
-      <Link to="/signup">signup</Link>if not have a account
+      </form> */}
+    <div>
+        <Show when="signed-out">
+          <SignInButton />
+          <SignUpButton />
+        </Show>
+        
+    </div>
+    <h5>signup if you dont have a account</h5>
     </div>
   )
 }
