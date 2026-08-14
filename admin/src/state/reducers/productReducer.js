@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 export const addProduct = createAsyncThunk("product/addProduct",
-    async(productData,token,{rejectWithValue})=>{
+    async({productData,token},{rejectWithValue})=>{
      try{
      
       console.log("productdata",productData)
@@ -83,7 +83,7 @@ export const updateProuduct = createAsyncThunk("product/updateProuct", async({id
   }
 });
  
-export const deleteProduct = createAsyncThunk("product/deleteProduct",async(id,token,{rejectWithValue})=>{
+export const deleteProduct = createAsyncThunk("product/deleteProduct",async({id,token},{rejectWithValue})=>{
  try{
  const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/remove/${id}`,{
     method:"DELETE",
