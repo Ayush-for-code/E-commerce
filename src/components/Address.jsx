@@ -9,6 +9,7 @@ import {
   deleteAddress,
   setDefaultAddress
 } from "../state/reducers/address";
+import {useAuth} from "@clerk/react";
 
 const Address = () => {
   const [open, setOpen] = useState(false);
@@ -27,6 +28,7 @@ const Address = () => {
   });
   const dispatch = useDispatch();
   const { address, loading, error } = useSelector((state) => state.addresses);
+    const { getToken, isLoaded, isSignedIn } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,8 +78,17 @@ const handleDefault = (item)=>{
 dispatch(setDefaultAddress(item._id))
 }
   useEffect(() => {
+     const loadAddress = async () => {
+      if (!isLoaded || !isSignedIn) return;
+
+      const token = await getToken();
+
+      dispatch(fetchAddress(token));
+    };
+
+    loadAddress();
     dispatch(fetchAddress());
-  }, [dispatch]);
+  }, [isLoaded, isSignedIn, getToken, dispatch]);
   return (
     <>
       <div className="addresses">

@@ -5,6 +5,7 @@ import { useDispatch, useSelector} from 'react-redux'
 import { getProduct,addProduct } from '../state/reducers/productReducer'
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import Skeleton from "../components/Skeleton"
+import { useAuth } from '@clerk/react'
 
 
 
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const [isOpen,setOpen] = useState(false);
   const [input ,setInput] = useState({name:"",price:"",stock:"",discount:"",image:null,category:"",description:""})
   console.log(input);
+  const {isLoaded,isSignedIn,getToken} = useAuth();
 
   const handleInput = (e)=>{
    const {name,value,files} = e.target;
@@ -22,7 +24,7 @@ const Dashboard = () => {
   const handleAdd = ()=>{
     
   }
-  const handleSubmit = (e)=>{
+  const handleSubmit = async (e)=>{
     e.preventDefault()
     const formData = new FormData();
     formData.append("name", input.name);
@@ -32,8 +34,8 @@ const Dashboard = () => {
   formData.append("category", input.category);
   formData.append("description", input.description);
   formData.append("image", input.image);
-
-    dispatch(addProduct(formData));
+   const token = await getToken();
+    dispatch(addProduct({productData:formData,token:token}));
     setOpen(false);
      const notify = () =>
                     toast.success("successfuly added product", {
@@ -50,9 +52,36 @@ const Dashboard = () => {
                     notify();
 
   }
- useEffect(()=>{
-  dispatch(getProduct())
- },[dispatch])
+useEffect(() => {
+  const fetchProducts = async () => {
+    console.log("1. useEffect running");
+
+    if (!isLoaded) {
+      console.log("2. Clerk is not loaded");
+      return;
+    }
+
+    if (!isSignedIn) {
+      console.log("3. User is NOT signed in");
+      return;
+    }
+
+    console.log("4. User is signed in");
+
+    const token = await getToken();
+    console.log(token)
+
+    console.log("5. Clerk token:", token ? "TOKEN RECEIVED" : "NO TOKEN");
+
+    if (!token) return;
+
+    const result = await dispatch(getProduct(token));
+
+    console.log("6. Redux result:", result);
+  };
+
+  fetchProducts();
+}, [isLoaded, isSignedIn, getToken, dispatch]);
   return (
    <div className='dashboard'>
        <ToastContainer

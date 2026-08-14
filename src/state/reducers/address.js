@@ -8,11 +8,12 @@ export const fetchAddress = createAsyncThunk(
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/get`, {
         method: "GET",
-        headers: {
-          "auth-token": localStorage.getItem("auth-token"),
-        },
+        headers:{
+          Authorization: `Bearer ${token}`,
+        }
       });
       const data = await res.json();
+      console.log("working");
       return data.addressDoc.addresses;
     } catch (err) {
       return rejectWithValue(err.message);

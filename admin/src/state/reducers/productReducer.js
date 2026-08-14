@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+
 export const addProduct = createAsyncThunk("product/addProduct",
-    async(productData,{rejectWithValue})=>{
+    async(productData,token,{rejectWithValue})=>{
      try{
+     
       console.log("productdata",productData)
        const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/create`,{
         method :"POST",
         headers:{
-          "auth-token":localStorage.getItem("auth-token")
+          "Authorization": `Bearer ${token}`
         },
         body:productData
        });
@@ -23,21 +25,43 @@ export const addProduct = createAsyncThunk("product/addProduct",
      }
 });
 
-export const getProduct = createAsyncThunk("product/getProduct",async(_,{rejectWithValue})=>{
-try{
-  const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/get`);
- const data = await res.json();
- console.log(`products are here ${data}`);
- if(!data.success){
-  return rejectWithValue(data.messsage)
- }
- console.log("products",data.products)
- return data.products
-}
-catch(err){
-  return rejectWithValue(err.message)
-}
-})
+export const getProduct = createAsyncThunk(
+  "product/getProduct",
+  async (token, { rejectWithValue }) => {
+    try {
+      console.log("TOKEN:", token ? "RECEIVED" : "MISSING");
+
+      const url = `${import.meta.env.VITE_RENDERURI}/api/product/get`;
+
+      console.log("REQUEST URL:", url);
+
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("RESPONSE STATUS:", res.status);
+      console.log("RESPONSE OK:", res.ok);
+
+      const data = await res.json();
+
+      console.log("BACKEND RESPONSE:", data);
+
+      if (!res.ok) {
+        return rejectWithValue(
+          data.message || `Server returned ${res.status}`
+        );
+      }
+
+      return data.products;
+    } catch (err) {
+      console.error("FETCH ERROR:", err);
+      return rejectWithValue(err.message);
+    }
+  }
+);
 export const updateProuduct = createAsyncThunk("product/updateProuct", async({id,updateData},{rejectWithValue})=>{
   try{
    const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/update/${id}`,{
