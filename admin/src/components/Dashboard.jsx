@@ -35,7 +35,7 @@ const Dashboard = () => {
   formData.append("description", input.description);
   formData.append("image", input.image);
    const token = await getToken();
-    dispatch(addProduct({productData:formData,token:token}));
+    dispatch(addProduct({productData:formData,token}));
     setOpen(false);
      const notify = () =>
                     toast.success("successfuly added product", {
