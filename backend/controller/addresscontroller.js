@@ -1,5 +1,5 @@
 const Address = require("../modals/Address");
-const ClerkUser = require("../modals/ClerkUser");
+const Clerk = require("../modals/ClerkUser");
 
 exports.addAddress = async (req, res) => {
   try {
