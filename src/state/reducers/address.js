@@ -13,7 +13,7 @@ export const fetchAddress = createAsyncThunk(
         }
       });
       const data = await res.json();
-      console.log("working");
+      console.log("working",data);
       return data.addressDoc.addresses;
     } catch (err) {
       return rejectWithValue(err.message);
