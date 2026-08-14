@@ -5,10 +5,10 @@ const requireAuth = require("../middleware/clerkmiddleWare");
 
 const {createProduct,getProduct,updateProduct,removeProduct,getSingleProduct} = require("../controller/productcontroller");
 
-router.post("/create",requireAuth,upload.single("image"),createProduct);
-router.get("/get",requireAuth,getProduct);
-router.put("/update/:id",requireAuth,updateProduct);
-router.delete("/remove/:id",requireAuth,removeProduct);
-router.get("/single/:id",requireAuth,getSingleProduct);
+router.post("/create",upload.single("image"),createProduct);
+router.get("/get",getProduct);
+router.put("/update/:id",updateProduct);
+router.delete("/remove/:id",removeProduct);
+router.get("/single/:id",getSingleProduct);
 
 module.exports = router;
