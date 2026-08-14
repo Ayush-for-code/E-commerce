@@ -3,6 +3,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { updateProuduct,getProduct,deleteProduct} from "../state/reducers/productReducer";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import SkeletonCard from "./SkeletonCard";
+import { useAuth } from "@clerk/react";
 
 const Products = () => {
   const [edit, setEdit] = useState(false);
@@ -21,10 +22,12 @@ const Products = () => {
 
   const { products,loading } = useSelector((state) => state.product);
   const dispatch = useDispatch()
+  const {isLoaded,isSignedIn,getToken} = useAuth();
+  const token = getToken();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(updateProuduct({id,updateData:input}))
+    await dispatch(updateProuduct({id,updateData:input,token:token}))
    await dispatch(getProduct())
     setEdit(false);
     const notify = () =>
@@ -63,8 +66,8 @@ const handleEdit = (item)=>{
     }));
   };
   const handleRemove= async(id)=>{
-   await dispatch(deleteProduct(id));
-   await dispatch(getProduct());
+   await dispatch(deleteProduct({id:id,token:token}));
+   await dispatch(getProduct(token));
     const notify = () =>
                 toast.error("successfuly deleted", {
                   position: "top-center",
@@ -82,9 +85,36 @@ const handleEdit = (item)=>{
   }
 
 
-useEffect(()=>{
- dispatch(getProduct())
-},[dispatch])
+useEffect(() => {
+  const fetchProducts = async () => {
+    console.log("1. useEffect running");
+
+    if (!isLoaded) {
+      console.log("2. Clerk is not loaded");
+      return;
+    }
+
+    if (!isSignedIn) {
+      console.log("3. User is NOT signed in");
+      return;
+    }
+
+    console.log("4. User is signed in");
+
+    const token = await getToken();
+    console.log(token)
+
+    console.log("5. Clerk token:", token ? "TOKEN RECEIVED" : "NO TOKEN");
+
+    if (!token) return;
+
+    const result = await dispatch(getProduct(token));
+
+    console.log("6. Redux result:", result);
+  };
+
+  fetchProducts();
+}, [isLoaded, isSignedIn, getToken, dispatch]);
 
   return (
     <>

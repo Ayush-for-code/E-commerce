@@ -62,13 +62,13 @@ export const getProduct = createAsyncThunk(
     }
   }
 );
-export const updateProuduct = createAsyncThunk("product/updateProuct", async({id,updateData},{rejectWithValue})=>{
+export const updateProuduct = createAsyncThunk("product/updateProuct", async({id,updateData,token},{rejectWithValue})=>{
   try{
    const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/update/${id}`,{
     method:"PUT",
     headers:{
         "Content-type": "application/json",
-        "auth-token":localStorage.getItem("auth-token")
+         Authorization: `Bearer ${token}`,
     },
     body:JSON.stringify(updateData)
    })
@@ -83,13 +83,13 @@ export const updateProuduct = createAsyncThunk("product/updateProuct", async({id
   }
 });
  
-export const deleteProduct = createAsyncThunk("product/deleteProduct",async(id,{rejectWithValue})=>{
+export const deleteProduct = createAsyncThunk("product/deleteProduct",async(id,token,{rejectWithValue})=>{
  try{
  const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/remove/${id}`,{
     method:"DELETE",
     headers:{
       "Content-Type":"application/json",
-      "auth-token" : localStorage.getItem("auth-token")
+      Authorization: `Bearer ${token}`,
     }
   });
    const data = await res.json();
