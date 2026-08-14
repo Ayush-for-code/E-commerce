@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchAddress = createAsyncThunk(
   "address/fetchAddress",
-  async (_, { rejectWithValue }) => {
+  async(token, { rejectWithValue }) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/get`, {
         method: "GET",
@@ -24,13 +24,13 @@ export const fetchAddress = createAsyncThunk(
 //for adding user address i name it createaddress bcz the name is already taken
 export const createAddress = createAsyncThunk(
   "address/createAddress",
-  async (addressData, { rejectWithValue }) => {
+  async ({addressData,token}, { rejectWithValue }) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("auth-token"),
+           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(addressData),
       });

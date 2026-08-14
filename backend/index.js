@@ -26,6 +26,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://e-commerce-pink-eta-92.vercel.app",
+  "https://e-commerce-novb.vercel.app"
 ];
 
 app.use(cors({

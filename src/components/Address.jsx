@@ -30,9 +30,10 @@ const Address = () => {
   const { address, loading, error } = useSelector((state) => state.addresses);
     const { getToken, isLoaded, isSignedIn } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    dispatch(createAddress(input));
+    const token = getToken();
+    const result = await dispatch(createAddress({addressData:input,token}));
     setOpen(false);
   };
   const handleUpdate = (e)=>{
@@ -87,7 +88,7 @@ dispatch(setDefaultAddress(item._id))
     };
 
     loadAddress();
-    dispatch(fetchAddress());
+
   }, [isLoaded, isSignedIn, getToken, dispatch]);
   return (
     <>
