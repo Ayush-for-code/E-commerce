@@ -22,8 +22,18 @@ const PORT = process.env.PORT || 3000;
 // Enable CORS
 // Allows frontend to access backend
 // =============================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+];
 
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 
 // =============================
 // Clerk Webhook
