@@ -9,7 +9,6 @@ import './App.css'
 import Address from './components/Address';
 import Order from './components/Order';
 import Login from './components/LoginForm';
-import Signup from "./components/Signform"
 import Overview from './pages/Overview';
 import Confirm from './pages/OrderConfirm';
 import Payment from './pages/Payment';

@@ -23,12 +23,13 @@ const Products = () => {
   const { products,loading } = useSelector((state) => state.product);
   const dispatch = useDispatch()
   const {isLoaded,isSignedIn,getToken} = useAuth();
-  const token = getToken();
+  
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(updateProuduct({id,updateData:input,token:token}))
-   await dispatch(getProduct())
+    const token = await getToken();
+    await dispatch(updateProuduct({id,updateData:input,token}))
+   await dispatch(getProduct(token))
     setEdit(false);
     const notify = () =>
                 toast.success("successfuly updated", {
@@ -66,7 +67,8 @@ const handleEdit = (item)=>{
     }));
   };
   const handleRemove= async(id)=>{
-   await dispatch(deleteProduct({id:id,token:token}));
+    const token = await getToken();
+   await dispatch(deleteProduct({id,token:token}));
    await dispatch(getProduct(token));
     const notify = () =>
                 toast.error("successfuly deleted", {
