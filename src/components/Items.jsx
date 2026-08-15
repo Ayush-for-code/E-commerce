@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component"
 import Product from "./Product";
 import SkeletonCard from "./SkeletonCard";
+import { useAuth } from "@clerk/react"; 
 
 const Items = () => {
   const dispatch = useDispatch();
+  const {isLoaded,isSignedIn,getToken} = useAuth()
 
   const { product, loading, error, query, category,hasMore} = useSelector(
     (state) => state.product
@@ -24,8 +26,51 @@ const Items = () => {
   };
   useEffect(() => {
     setpage(1)
-    dispatch(fetchProduct({page:1}));
-  }, [dispatch, query, category]); // 🔑 re-fetch on search change
+     const ClerkOutput = async () => {
+     if (!isLoaded) {
+      return;
+    }
+    if (!isSignedIn) {
+      console.log("User is not signed in");
+      return;
+    }
+
+    try {
+      const token = await getToken();
+
+      console.log("Clerk token received:", !!token);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_RENDERURI1}/api/user/me`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
+
+      console.log("Status:", response.status);
+      console.log("Content-Type:", response.headers.get("content-type"));
+
+      const text = await response.text();
+
+      console.log("Raw backend response:", text);
+
+      // Only try JSON if the server actually returned JSON
+      if (response.headers.get("content-type")?.includes("application/json")) {
+        const data = JSON.parse(text);
+        console.log("Backend response:", data);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  ClerkOutput();
+
+  }, [dispatch, query, category,isSignedIn,getToken]); // 🔑 re-fetch on search change
 
 
   if (error) return <h2>Error: {error}</h2>;

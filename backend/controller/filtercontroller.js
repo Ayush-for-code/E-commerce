@@ -28,7 +28,6 @@ let sortOption = {}
 if(sort === "high") sortOption.price = -1;
 if(sort === "low") sortOption.price = 1;
 
-console.log("query :",req.query)
 //logic for pagination
 
 const currentPage = Number(page) ;
