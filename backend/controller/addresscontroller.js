@@ -1,11 +1,10 @@
 const Address = require("../modals/Address");
-const ClerkUser= require("../modals/ClerkUser");
+const Clerk = require("../modals/ClerkUser");
 
 exports.addAddress = async (req, res) => {
   try {
     const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
-    console.log(`${user?"got user":"user missing"}`);
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
@@ -63,7 +62,7 @@ exports.addAddress = async (req, res) => {
 exports.getAddress = async(req,res)=>{
  try{
        const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
@@ -83,7 +82,7 @@ exports.getAddress = async(req,res)=>{
 exports.updateAddress = async (req, res) => {
   try {
      const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
@@ -155,7 +154,7 @@ exports.updateAddress = async (req, res) => {
 exports.removeAddress = async(req,res)=>{
 try{
       const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
@@ -190,7 +189,7 @@ catch(err){
 exports.setDefaultAddress = async(req,res)=>{
 try{
       const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
@@ -227,7 +226,7 @@ catch(err){
 exports.removeDefaultAddress = async (req, res) => {
   try {
       const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
@@ -283,7 +282,7 @@ exports.removeDefaultAddress = async (req, res) => {
 exports.fetchDefaultAddress= async (req,res)=>{
 try{
     const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const user = await Clerk.findOne({clerkId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
