@@ -284,7 +284,7 @@ try{
     const clerkId = req.auth.userId;
     const user = await Clerk.findOne({clerkId});
     if(!user){
-      return res.status(404).json({success:false,message:"user not found"});
+      return res.status(404).json({success:false,message:"user not found",user:user});
     }
     const userId = user._id;
  const addressDoc = await Address.findOne({userId});
