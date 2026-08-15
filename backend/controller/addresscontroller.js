@@ -1,10 +1,11 @@
 const Address = require("../modals/Address");
-const Clerk = require("../modals/ClerkUser");
+const ClerkUser= require("../modals/ClerkUser");
 
 exports.addAddress = async (req, res) => {
   try {
     const clerkId = req.auth.userId;
     const user = await ClerkUser.findOne({clerkId});
+    console.log(`${user?"got user":"user missing"}`);
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
