@@ -32,17 +32,18 @@ const Address = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const token = getToken();
+    const token = await getToken();
     const result = await dispatch(createAddress({addressData:input,token}));
     setOpen(false);
   };
-  const handleUpdate = (e)=>{
+  const handleUpdate = async (e)=>{
       e.preventDefault();
-
-  dispatch(
+ const token = await getToken();
+ const result = await dispatch(
     updateAddress({
       id: selectedId,
       addressData: input,
+      token
     })
   );
 
@@ -52,9 +53,10 @@ const Address = () => {
   console.log(input)
   console.log(selectedId)
   }
-  const handleRemove = (id) => {
-    dispatch(deleteAddress(id));
-    dispatch(fetchAddress());
+  const handleRemove = async(id) => {
+    const token = await getToken();
+    const deleteInput = await dispatch(deleteAddress({addressId:id,token:token}));
+    const result = await dispatch(fetchAddress(token));
     console.log(address);
   };
   const handleInput = (e) => {
@@ -74,15 +76,25 @@ const Address = () => {
     setSelectedId(item._id);
     setEditMode(true);
   };
-const handleDefault = (item)=>{
+const handleDefault = async(item)=>{
   setDefault(true)
-dispatch(setDefaultAddress(item._id))
+ const token = await getToken();
+const result = await dispatch(setDefaultAddress({id:item._id,token}))
 }
   useEffect(() => {
      const loadAddress = async () => {
       if (!isLoaded || !isSignedIn) return;
 
       const token = await getToken();
+      const res = await fetch(`http://localhost:3000/api/user/me`,{
+        method : "GET",
+        headers :{
+          Authorization:`Bearer ${token}`,
+        }
+      });
+      const data = await res.json();
+      console.log(data);
+
 
       dispatch(fetchAddress(token));
     };

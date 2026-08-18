@@ -29,8 +29,8 @@ export const createAddress = createAsyncThunk(
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/add`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
            Authorization: `Bearer ${token}`,
+           "Content-Type": "application/json"
         },
         body: JSON.stringify(addressData),
       });
@@ -49,15 +49,14 @@ export const createAddress = createAsyncThunk(
 //for removing user address from data base
 export const deleteAddress = createAsyncThunk(
   "address/deleteAddress",
-  async (addressId, { rejectWithValue }) => {
+  async ({addressId,token}, { rejectWithValue }) => {
     try {
       const res = await fetch(
         `${import.meta.env.VITE_RENDERURI}/api/address/remove/${addressId}`,
         {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("auth-token"),
+             Authorization: `Bearer ${token}`,
           },
         },
       );
@@ -75,15 +74,16 @@ export const deleteAddress = createAsyncThunk(
 //for updating user addresses form database
 export const updateAddress = createAsyncThunk(
   "address/updateAddress",
-  async ({ id, addressData }, { rejectWithValue }) => {
+  async ({ id, addressData,token }, { rejectWithValue }) => {
     try {
       const res = await fetch(
         `${import.meta.env.VITE_RENDERURI}/api/address/update/${id}`,
         {
           method: "PUT",
           headers: {
+             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("auth-token"),
+
           },
           body: JSON.stringify(addressData),
         },
@@ -103,15 +103,16 @@ export const updateAddress = createAsyncThunk(
 //for setDeault address to use only one address for order at a time
 export const setDefaultAddress = createAsyncThunk(
   "address/setDefaultAddress",
-  async (id, { rejectWithValue }) => {
+  async ({id,token}, { rejectWithValue }) => {
     try {
       const res = await fetch(
         `${import.meta.env.VITE_RENDERURI}/api/address/setDefault/${id}`,
         {
           method: "POST",
           headers: {
+             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("auth-token"),
+            
           },
         },
       );
@@ -130,13 +131,14 @@ export const setDefaultAddress = createAsyncThunk(
 //slice for fetch only deafult address
 export const fetchDefaultAddress = createAsyncThunk(
   "address/fetchDefaultAddress",
-  async (_, { rejectWithValue }) => {
+  async (token, { rejectWithValue }) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/setDefault`, {
         method: "POST",
         header: {
+           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("auth-token"),
+         
         },
       });
       const data = await res.json();

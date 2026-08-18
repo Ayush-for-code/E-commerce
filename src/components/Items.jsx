@@ -26,53 +26,48 @@ const Items = () => {
   };
   useEffect(() => {
     setpage(1)
-     const ClerkOutput = async () => {
-     if (!isLoaded) {
+    dispatch(fetchProduct({page:1}));
+  }, [dispatch, query, category]); // 🔑 re-fetch on search change
+
+ useEffect(() => {
+    if (!isLoaded) {
       return;
     }
+
     if (!isSignedIn) {
-      console.log("User is not signed in");
+      console.log("User is NOT logged in");
       return;
     }
 
-    try {
-      const token = await getToken();
+    console.log("User IS logged in");
+  }, [isLoaded, isSignedIn]);
 
-      console.log("Clerk token received:", !!token);
-
-      const response = await fetch(
-        `${import.meta.env.VITE_RENDERURI1}/api/user/me`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "ngrok-skip-browser-warning": "true",
-          },
-        }
-      );
-
-      console.log("Status:", response.status);
-      console.log("Content-Type:", response.headers.get("content-type"));
-
-      const text = await response.text();
-
-      console.log("Raw backend response:", text);
-
-      // Only try JSON if the server actually returned JSON
-      if (response.headers.get("content-type")?.includes("application/json")) {
-        const data = JSON.parse(text);
-        console.log("Backend response:", data);
-      }
-    } catch (error) {
-      console.error("Error:", error);
+  // =========================
+  // Get Clerk token
+  // Only needed when calling
+  // protected backend routes
+  // =========================
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) {
+      return;
     }
-  };
 
-  ClerkOutput();
+    const getUserToken = async () => {
+      try {
+        const token = await getToken();
 
-  }, [dispatch, query, category,isSignedIn,getToken]); // 🔑 re-fetch on search change
+        console.log(
+          "Clerk token:",
+          token ? "TOKEN RECEIVED" : "NO TOKEN"
+        );
+      } catch (error) {
+        console.error("Error getting Clerk token:", error);
+      }
+    };
 
-
+    getUserToken();
+  }, [isLoaded, isSignedIn, getToken]);
+  
   if (error) return <h2>Error: {error}</h2>;
 
   return (

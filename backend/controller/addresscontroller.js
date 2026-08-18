@@ -3,87 +3,64 @@ const ClerkUser = require("../modals/ClerkUser");
 
 exports.addAddress = async (req, res) => {
   try {
-    // Safely extract the ID whether req.auth is a function or an object
-    const authData = typeof req.auth === "function" ? req.auth() : req.auth;
-    const clerkId = authData?.userId;
+     const { userId } = req.auth();
 
-    console.log("=== DEBUGGING AUTH ===");
-    console.log("1. Clerk ID from request:", clerkId);
-    console.log("Type of Clerk ID:", typeof clerkId);
-
-    if (!clerkId) {
-      return res.status(401).json({
-        success: false,
-        message: "User is not authenticated",
-      });
+   const user = await ClerkUser.findOne({
+  clerkId: userId
+});
+    if(!user){
+      return res.status(404).json({success:false,message:"user not found"});
     }
-
-    // Attempt to find the user in MongoDB
-    const user = await ClerkUser.findOne({ clerkId: clerkId }).lean();
-
-    console.log("2. Result from MongoDB:", user);
-    console.log("======================");
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found in MongoDB",
-        debugClerkId: clerkId // Sending this to Postman/Frontend temporarily to verify
-      });
-    }
-
+    
     const mongoUserId = user._id;
+    const { name, phoneNo, addressLine, state, city, pincode, landmark, country } = req.body;
 
-    const {
-      name, phoneNo, addressLine, state, city, pincode, landmark, country,
-    } = req.body;
-
-    // Validation
-    if (
-      !name?.trim() || !phoneNo?.trim() || !addressLine?.trim() ||
-      !state?.trim() || !city?.trim() || !pincode?.trim() || !country?.trim()
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "All required fields are missing or invalid",
-      });
+    if (!name || !phoneNo || !addressLine || !state || !city || !pincode || !country) {
+      return res.status(400).json({ success: false, message: "All required fields missing" });
     }
+
+    let addressDoc = await Address.findOne({ userId:mongoUserId });
 
     const newAddress = {
-      name: name.trim(),
-      phoneNo: phoneNo.trim(),
-      addressLine: addressLine.trim(),
-      state: state.trim(),
-      city: city.trim(),
-      pincode: pincode.trim(),
-      landmark: landmark ? landmark.trim() : "",
-      isDefault: false,
-      country: country.trim(),
+      name,
+      phoneNo,
+      addressLine,
+      state,
+      city,
+      pincode,
+      landmark,
+      country,
+      isDefault: false
     };
 
-    const updatedAddressDoc = await Address.findOneAndUpdate(
-      { userId: mongoUserId },
-      { $push: { addresses: newAddress } },
-      { new: true, upsert: true }
-    );
+    if (!addressDoc) {
+      addressDoc = await Address.create({
+        userId,
+        addresses: [newAddress]
+      });
+    } else {
+      addressDoc.addresses.push(newAddress);
+      await addressDoc.save();
+    }
+    const addedAddress =
+  addressDoc.addresses[addressDoc.addresses.length - 1];
 
-    const addedAddress = updatedAddressDoc.addresses[updatedAddressDoc.addresses.length - 1];
-
-    return res.status(201).json({
+    res.status(201).json({
       success: true,
       message: "Address added successfully",
-      address: addedAddress,
+      address:  addedAddress
     });
 
   } catch (err) {
-    console.error("ADD ADDRESS ERROR:", err);
-    return res.status(500).json({
+    console.error(err);
+    res.status(500).json({
       success: false,
       message: "Cannot create address",
-      error: err.message,
+      error: err.message
     });
   }
 };
+
 
 //endpoint for getting all address
 exports.getAddress = async (req, res) => {
@@ -148,12 +125,12 @@ exports.getAddress = async (req, res) => {
 //enidpoint for updating address
 exports.updateAddress = async (req, res) => {
   try {
-     const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+     const {userId} = req.auth();
+    const user = await ClerkUser.findOne({clerkId:userId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
-    const userId = user._id;
+    const mongoUserId = user._id;
     const addressId = req.params.addressId;
 
     if (!addressId) {
@@ -174,7 +151,7 @@ exports.updateAddress = async (req, res) => {
       country
     } = req.body;
 
-    const addressDoc = await Address.findOne({ userId });
+    const addressDoc = await Address.findOne({userId:mongoUserId});
 
     if (!addressDoc) {
       return res.status(404).json({
@@ -220,18 +197,18 @@ exports.updateAddress = async (req, res) => {
 //this is endpoint for removing address
 exports.removeAddress = async(req,res)=>{
 try{
-      const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+      const {userId} = req.auth();
+    const user = await ClerkUser.findOne({clerkId:userId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
-    const userId = user._id;
+    const mongoUserId = user._id;
     const addressId = req.params.addressId
    
     if(!addressId){
         return res.status(404).json({success:false,message:"not found any addressid"});
     }
-     const addressDoc = await Address.findOne({userId});
+     const addressDoc = await Address.findOne({userId:mongoUserId});
      //checking if addressDoc is found
      if(!addressDoc){
       return res.status(404).json({success:false,message:"address doc not found"});
@@ -255,14 +232,14 @@ catch(err){
 }
 exports.setDefaultAddress = async(req,res)=>{
 try{
-      const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+      const {userId} = req.auth();
+    const user = await ClerkUser.findOne({clerkId:userId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
-    const userId = user._id;
+    const mongoUserId = user._id;
 const addressId = req.params.addressId;
-const addressDoc = await Address.findOne({userId});
+const addressDoc = await Address.findOne({userId:mongoUserId});
 
 if(!addressDoc){
     return res.status(404).json({success:false,message:"addressDoc not found"});
@@ -292,15 +269,15 @@ catch(err){
 // Endpoint to remove default flag from an address
 exports.removeDefaultAddress = async (req, res) => {
   try {
-      const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+      const {userId} = req.auth();
+    const user = await ClerkUser.findOne({clerkId:userId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found"});
     }
-    const userId = user._id;
+    const mongoUserId = user._id;
     const addressId = req.params.addressId;
 
-    const addressDoc = await Address.findOne({ userId });
+    const addressDoc = await Address.findOne({ userId:mongoUserId });
 
     if (!addressDoc) {
       return res.status(404).json({
@@ -348,13 +325,13 @@ exports.removeDefaultAddress = async (req, res) => {
 //this is a endpoint for fetch only users default address
 exports.fetchDefaultAddress= async (req,res)=>{
 try{
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({clerkId});
+    const {userId}= req.auth();
+    const user = await ClerkUser.findOne({clerkId:userId});
     if(!user){
       return res.status(404).json({success:false,message:"user not found",user:user});
     }
-    const userId = user._id;
- const addressDoc = await Address.findOne({userId});
+    const mongoUserId = user._id;
+ const addressDoc = await Address.findOne({userId:mongoUserId});
  if(!addressDoc || addressDoc.addresses.length === 0 ){
   return res.status(404).json({success:false,message:"address not found"});
  }
