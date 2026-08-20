@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async ({ id, qty }, { rejectWithValue }) => {
+  async ({ id,qty,token }, { rejectWithValue }) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/order/create`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-type": "application/json",
-          "auth-token": localStorage.getItem("auth-token"),
         },
         body: JSON.stringify(
           {
@@ -35,13 +35,12 @@ export const createOrder = createAsyncThunk(
 //for fetching all orders from user
 export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
-  async (_, { rejectWithValue }) => {
+  async (token, { rejectWithValue }) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/order/get`, {
-        method: "POST",
+        method: "GET",
         headers: {
-          "Content-type": "application/json",
-          "auth-token": localStorage.getItem("auth-token"),
+          Authorization:`Bearer ${token}`,
         },
       });
       const data = await res.json();
@@ -52,7 +51,7 @@ export const fetchOrders = createAsyncThunk(
       console.log(data.orders);
       return data;
     } catch (error) {
-      rejectWithValue(error.message);
+    return  rejectWithValue(error.message);
     }
   },
 );

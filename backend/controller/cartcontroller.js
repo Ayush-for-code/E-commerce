@@ -5,15 +5,15 @@ const ClerkUser = require("../modals/ClerkUser");
 exports.addToCart = async (req, res) => {
   try {
     //now fetching id form clerk
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
-    const userId = user._id;
+    const mongoId = user._id;
     const { productId, quantity } = req.body;
     //cheching if product is exited in cart
     const product = await Products.findById(productId);
@@ -27,7 +27,7 @@ exports.addToCart = async (req, res) => {
       return res.status(400).json({ success: false, message: "out of stock" });
     }
     //checking if user cart is already existed
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userId:mongoId });
     if (!cart) {
       cart = new Cart({
         userId,
@@ -67,8 +67,8 @@ exports.addToCart = async (req, res) => {
 //endpoint for getting user cart
 exports.getItem = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
 
     if (!user) {
       return res.status(404).json({
@@ -76,7 +76,7 @@ exports.getItem = async (req, res) => {
         message: "User not found",
       });
     }
-    const userId = user._id;
+    const mongoId = user._id;
     if (!userId) {
       return res.status(400).json({
         success: false,

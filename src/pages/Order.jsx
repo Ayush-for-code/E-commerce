@@ -1,13 +1,20 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchOrders } from "../state/reducers/orderslice";
+import { useAuth } from "@clerk/react";
 
 function Orders() {
   const dispatch = useDispatch();
   const { order } = useSelector((state) => state.order);
+  const {getToken} =useAuth();
 
   useEffect(() => {
-    dispatch(fetchOrders());
+    const getOrder = async ()=>{
+      const token = await getToken();
+       const result = await dispatch(fetchOrders(token));
+    }
+    getOrder();
+   
   }, [dispatch]);
 
   return (

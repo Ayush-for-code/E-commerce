@@ -5,7 +5,7 @@ const fetchUser = require("../middleware/clerkmiddleWare");
 const {createOrder,cancleOrder,getUserOrder,updateUserStatus,confirmOrder}= require("../controller/ordercontroller");
 
 router.post("/create",fetchUser,createOrder);
-router.post("/get",fetchUser,getUserOrder);
+router.get("/get",fetchUser,getUserOrder);
 router.put("/update",fetchUser,updateUserStatus);
 router.post("/cancle",fetchUser,cancleOrder);
 router.post("/confirm",fetchUser,confirmOrder);

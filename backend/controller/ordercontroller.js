@@ -5,8 +5,8 @@ const ClerkUser = require("../modals/ClerkUser");
 
 exports.createOrder = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId}= req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -14,7 +14,7 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
     const {items} = req.body;
 
     if (!items || items.length === 0) {
@@ -50,7 +50,7 @@ exports.createOrder = async (req, res) => {
      const discountTotal = ( subtotal * discount) / 100;
     const total = Math.round(subtotal + deliveryCharge - discountTotal);
 //logic for getting only deault user address
-const addressDoc = await Address.findOne({userId});
+const addressDoc = await Address.findOne({userId:mongoId});
 if(!addressDoc){
   return res.status(404).json({success:false,message:"addressDoc not found"});
 }
@@ -60,7 +60,7 @@ if(!defaultAddress){
 }
 
     let order = new Order({
-      userId,
+      userId:mongoId,
       items: [
         {
           productId: product._id,
@@ -105,8 +105,8 @@ if(!defaultAddress){
 
 exports.getUserOrder = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId}= req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -114,9 +114,9 @@ exports.getUserOrder = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
     //this find all order which belongs to the user
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({ userId:mongoId });
     if (!orders || orders.length === 0) {
       return res
         .status(404)
@@ -131,8 +131,8 @@ exports.updateUserStatus = async (req, res) => {};
 // this is endpoint for cancle order
 exports.cancleOrder = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -140,14 +140,14 @@ exports.cancleOrder = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
     const { orderId } = req.body;
     if (!orderId) {
       return res
         .status(404)
         .json({ success: false, message: "orderid required" });
     }
-    const order = await Order.findOne({ _id: orderId, userId });
+    const order = await Order.findOne({ _id: orderId, userId:mongoId });
     if (!order) {
       return res
         .status(404)
@@ -168,8 +168,8 @@ exports.cancleOrder = async (req, res) => {
 //this is endpoint for confirm user order
 exports.confirmOrder = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -177,9 +177,9 @@ exports.confirmOrder = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
     const { orderId } = req.body;
-    const order = await Order.findOne({ _id: orderId, userId });
+    const order = await Order.findOne({ _id: orderId, userId:mongoId });
     if (!order) {
       return res
         .status(404)

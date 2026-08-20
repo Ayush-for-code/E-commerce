@@ -5,6 +5,7 @@ import { fetchSingleProduct } from "../state/reducers/productSlice";
 import { fetchAddress } from "../state/reducers/address"; //still have to for adding only deafault address only
 import { createOrder } from "../state/reducers/orderslice";
 import { createPayment, verifyPayment } from "../state/reducers/paymentslice";
+import { useAuth } from "@clerk/react";
 
 const OrderConfirm = () => {
   const { singleProduct } = useSelector((state) => state.product);
@@ -13,6 +14,7 @@ const OrderConfirm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const {getToken} = useAuth();
 
   const [qty, setQty] = useState(1);
   const [dfault, setDefault] = useState(false);
@@ -27,7 +29,8 @@ const OrderConfirm = () => {
  const confirmOrder = async () => {
   try {
     // Step 1: Create order
-    const orderResult = await dispatch(createOrder({ id, qty }));
+    const token = await getToken();
+    const orderResult = await dispatch(createOrder({id,qty,token}));
 
     console.log("Order Result:", orderResult);
 
@@ -41,7 +44,7 @@ const OrderConfirm = () => {
     }
 
     // Step 2: Create payment order
-    const paymentResult = await dispatch(createPayment(id));
+    const paymentResult = await dispatch(createPayment({id,token}));
 
     console.log("Payment Result:", paymentResult);
 
@@ -70,7 +73,8 @@ const OrderConfirm = () => {
 
       handler: async function (response) {
         try {
-          const verifyResult = await dispatch(verifyPayment(response));
+          const token = await getToken();
+          const verifyResult = await dispatch(verifyPayment({response,token}));
 
           if (verifyResult.payload?.success) {
             console.log("Payment verified");

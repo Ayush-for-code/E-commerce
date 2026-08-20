@@ -2,13 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const createPayment = createAsyncThunk(
   "payment/createPayment",
-  async (id, { rejectWithValue }) => {
+  async ({id,token}, { rejectWithValue }) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/payment/create`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-type": "application/json",
-          "auth-token": localStorage.getItem("auth-token"),
+
         },
         body: JSON.stringify({
           productId: id,
@@ -28,14 +29,15 @@ export const createPayment = createAsyncThunk(
 );
 export const verifyPayment = createAsyncThunk(
   "payment/verifyPayment",
-  async (response, { rejectWithValue }) => {
+  async ({response,token},{ rejectWithValue }) => {
     try {
       
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/payment/verify`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-type": "application/json",
-          "auth-token": localStorage.getItem("auth-token"),
+          
         },
         body: JSON.stringify({
           razorpay_order_id: response.razorpay_order_id,
