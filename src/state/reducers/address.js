@@ -135,7 +135,7 @@ export const fetchDefaultAddress = createAsyncThunk(
     try {
       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/address/setDefault`, {
         method: "POST",
-        header: {
+        headers: {
            Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
          

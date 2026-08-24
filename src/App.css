@@ -363,6 +363,13 @@ font-weight: 500;
 .addInfo {
   margin-bottom: 5px;
 }
+.add-card button{
+   outline: none;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px; 
+}
 .add-card .default-btn.default {
   background-color: rgb(55, 220, 55);
   outline: none;
