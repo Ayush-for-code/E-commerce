@@ -222,23 +222,28 @@ span svg {
 }
 
 .form input {
-  max-width: 60%;
+  min-width: 75%;
   margin: 5px;
-  border-radius: 12px;
+  border-radius: 6px;
   outline: none;
   border: none;
   padding: 12px 18px;
-  
 }
+.form input:nth-child(9){
+  background-color: yellow;
+  font-weight: 800;
+  margin-bottom: 41px;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 .form select {
-  max-width: 60%;
+  min-width: 75%;
   margin: 5px;
-  border-radius: 12px;
+  border-radius: 6px;
   outline: none;
   border: none;
   padding: 12px 18px;
@@ -287,7 +292,7 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 50px;
   }
   input {
-    border-radius: 12px;
+    border-radius: 16px;
     outline: none;
     border: none;
   }
@@ -297,19 +302,19 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .form {
   position: fixed;
-  top: -500px;
-  background-color: #8e8d8d;
+  top: -578px;
+  background-color: #333333;
   z-index: 1005;
   display: flex;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 19px;
   flex-direction: column;
-  width: 40%;
-  padding: 15px;
+  width: 56%;
+  padding: 20px 0px;
   transition: top 0.2s ease;
 }
 .form-open {
-  top: 0;
+  top: 90px;
 }
 .add-card {
   position: relative;
@@ -318,6 +323,26 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 18px 24px;
   margin: 18px 24px;
   min-width: 400px;
+}
+.add-btn{
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin:5px;
+  width: 70%;
+  margin-top:14px;
+  border:4px dotted #8e8d8d;
+  min-height:278px ;
+  outline:none;
+}
+.add-btn svg{
+  fill:#8e8d8d;
+  margin: 15px;
+  scale:2.5;
+}
+.add-btn span:nth-child(3){
+font-weight: 500;
 }
 .editbtn {
   position: absolute;
@@ -341,7 +366,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .add-card .default-btn.default {
   background-color: rgb(55, 220, 55);
   outline: none;
+  font-weight: 500;
   border: none;
+  border-radius: 5px;
   padding: 8px 12px;
 }
 .overview {
@@ -349,7 +376,6 @@ input[type="number"]::-webkit-outer-spin-button {
   color: inherit;
 }
 .image-slider {
- 
   border-radius: 12px;
   box-shadow:
     6px 6px 3px rgba(147, 147, 147, 0.351),
@@ -419,12 +445,23 @@ input[type="number"]::-webkit-outer-spin-button {
   align-items: center;
 }
 .orders {
+  display: flex;
+  justify-content: space-between;
   box-shadow: 3px 3px 16px 3px rgba(164, 163, 163, 0.519);
   padding: 14px 20px;
   margin-top: 15px;
   width: 85%;
   border-radius: 12px;
   margin-bottom: 15px;
+}
+.order-image{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+}
+.order-image img{
+  max-width: 50%;
 }
 /* css for skeleton loading  */
 .skeleton-card {
@@ -573,19 +610,22 @@ input[type="number"]::-webkit-outer-spin-button {
 
   .form input,
   .form select {
-    max-width: 100%;
+    max-width: 87%;
     width: 100%;
   }
 
   /* Address Card */
   .add-card {
-    min-width: 100%;
+    max-width: 93%;
     margin: 10px 0;
   }
 
   /* Orders */
   .orders {
     width: 95%;
+  }
+  .order-image{
+    width:fit-content;
   }
 
   /* Side Menus */

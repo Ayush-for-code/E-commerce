@@ -24,7 +24,7 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    const { productId, quantity } = items[0];
+    const { productId, quantity,image } = items[0];
     const qty = Number(quantity);
 
     const product = await Products.findById(productId);
@@ -67,7 +67,8 @@ if(!defaultAddress){
           name: product.name,
           price: product.price,
           quantity: qty,
-          totalPrice:subtotal
+          totalPrice:subtotal,
+          image:product.image[0]
         },
       ],
       orderAmount: {

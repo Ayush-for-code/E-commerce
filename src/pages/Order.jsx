@@ -20,8 +20,11 @@ function Orders() {
   return (
 
     <div className="page">
+     
       {order?.map((item) => (
-        <div className="orders" key={item._id}>
+        
+        <div className="orders">
+          <div className="order-details" key={item._id}>
           <p>Order ID: {item._id}</p>
           <p>name: {item.items?.[0]?.name}</p>
           <p>Status: {item.status}</p>
@@ -38,9 +41,25 @@ function Orders() {
     <p>pincode: {item.shippingAddress.pincode||"N/A"}</p>
   </div>
 )}
+
+        </div>
+              <div className="order-image">
+  {item.items?.[0]?.image?.[0] && (
+  <img
+    src={
+      item.items[0].image[0].startsWith("http")
+        ? item.items[0].image[0]
+        : `${import.meta.env.VITE_RENDERURI}/uploads/${item.items[0].image[0]}`
+    }
+    alt={item.items[0].name || "Product"}
+  />
+)}
+</div>
         </div>
         
+        
       ))}
+
     </div>
   );
 }

@@ -77,17 +77,17 @@ exports.getItem = async (req, res) => {
       });
     }
     const mongoId = user._id;
-    if (!userId) {
+    if (!mongoId) {
       return res.status(400).json({
         success: false,
         message: "userId required",
       });
     }
-    const cartItems = await Cart.findOne({ userId }).populate(
+    const cartItems = await Cart.findOne({ userId:mongoId }).populate(
       "items.productId",
     );
     if (!cartItems) {
-      res.status(400).json({
+     return res.status(400).json({
         success: false,
         message: "cart is empty",
       });
@@ -104,8 +104,8 @@ exports.getItem = async (req, res) => {
 //this is endpoint for removing or deleting cartItems
 exports.removeItem = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
 
     if (!user) {
       return res.status(404).json({
@@ -113,10 +113,10 @@ exports.removeItem = async (req, res) => {
         message: "User not found",
       });
     }
-    const userId = user._id;
+    const mongoId = user._id;
     const { productId } = req.body;
     //finding user cart from id
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId:mongoId });
 
     if (!cart) {
       return res
@@ -142,8 +142,8 @@ exports.removeItem = async (req, res) => {
 
 exports.updateItem = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId});
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -151,10 +151,10 @@ exports.updateItem = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
     const { productId, quantity } = req.body;
     //indentitfy user cart with userid
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId:mongoId });
     if (!cart) {
       return res
         .status(404)
@@ -186,9 +186,9 @@ exports.updateItem = async (req, res) => {
 exports.increaseQuantity = async (req, res) => {
   try {
     // Get Clerk user
-    const clerkId = req.auth.userId;
+    const {userId} = req.auth();
 
-    const user = await ClerkUser.findOne({ clerkId });
+    const user = await ClerkUser.findOne({ clerkId: userId});
 
     if (!user) {
       return res.status(404).json({
@@ -197,13 +197,13 @@ exports.increaseQuantity = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
 
     // Get product id from request
     const { productId } = req.body;
 
     // Find user's cart
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId:mongoId });
 
     if (!cart) {
       return res.status(404).json({
@@ -263,9 +263,9 @@ exports.increaseQuantity = async (req, res) => {
 //logic for decrease item qunatity
 exports.decreaseQuantity = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
+    const {userId} = req.auth();
 
-    const user = await ClerkUser.findOne({ clerkId });
+    const user = await ClerkUser.findOne({ clerkId: userId});
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -273,11 +273,11 @@ exports.decreaseQuantity = async (req, res) => {
       });
     }
 
-    const userId = user._id;
+    const mongoId = user._id;
     const { productId } = req.body;
 
     // Find user's cart
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId:mongoId });
 
     if (!cart) {
       return res.status(404).json({
@@ -324,8 +324,8 @@ exports.decreaseQuantity = async (req, res) => {
 //logic for clear entire cart
 exports.clearCart = async (req, res) => {
   try {
-    const clerkId = req.auth.userId;
-    const user = await ClerkUser.findOne({ clerkId });
+    const {userId} = req.auth();
+    const user = await ClerkUser.findOne({ clerkId:userId });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -333,8 +333,8 @@ exports.clearCart = async (req, res) => {
       });
     }
 
-    const userId = user._id;
-    const cart = await Cart.findOne({ userId });
+    const mongoId = user._id;
+    const cart = await Cart.findOne({ userId:mongoId });
     if (!cart) {
       return res
         .status(404)
