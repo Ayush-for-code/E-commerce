@@ -35,7 +35,7 @@ exports.addAddress = async (req, res) => {
 
     if (!addressDoc) {
       addressDoc = await Address.create({
-        userId,
+        userId:mongoUserId,
         addresses: [newAddress]
       });
     } else {

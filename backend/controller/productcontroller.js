@@ -1,11 +1,13 @@
 const Product = require("../modals/Product");
+const fs = require("fs/promises");
+const cloudniary = require("../config/cloudinary");
 
 exports.createProduct = async (req, res) => {
   try {
      console.log("BODY:", req.body);
       console.log("file",req.file);
     const { name, description, price, stock, category,discount} = req.body; //getting fields from deconstructing method
-    const image = req.file.filename;
+
 //chekcing for image file
 if(!req.file){
  return res.status(404).json({success:false,message:"file not found"});
@@ -18,13 +20,21 @@ if(!req.file){
         .status(400)
         .json({ success: false, message: "product is already existed" });
     }
+
+    const result = await cloudniary.uploader.upload(
+      req.file.path,{
+        folder: "ecommerce/product"
+      }
+    )
+
     //if not crated new product
     let product = new Product({
       name,
       description,
       price,
       stock,
-      image,
+       image:result.secure_url,
+       imagePublicId:result.public_id,
       discount,
       category,
     });
@@ -41,6 +51,21 @@ if(!req.file){
     res
       .status(500)
       .json({ success: false, message: "internal sever error", err });
+  } finally{
+     // Delete temporary file from local machine
+     if(req.file?.path){
+      try{
+       await fs.unlink(req.file.path);
+       console.log("Temporary file deleted");
+      }
+      catch(err){
+        console.error(
+                    "Failed to delete temporary file:",
+                    err.message
+                );
+      }
+     
+     }
   }
 };
 exports.getProduct = async (req, res) => {
@@ -53,7 +78,7 @@ exports.getProduct = async (req, res) => {
     res
       .status(400)
       .json({ success: false, message: "internal server error", err });
-  }
+  } 
 };
 
 //updating user products

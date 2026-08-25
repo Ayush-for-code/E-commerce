@@ -34,6 +34,11 @@ image: {
   type: [String],
   default: ["dont have image yet"]
 },
+ imagePublicId: {
+    type: String,
+    required: true,
+  },
+  
   discount:{
    type:Number,
    required:false
