@@ -71,51 +71,7 @@ const LoginForm = () => {
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-useEffect(() => {
-  const ClerkOutput = async () => {
-     if (!isLoaded) {
-      return;
-    }
-    if (!isSignedIn) {
-      console.log("User is not signed in");
-      return;
-    }
 
-    try {
-      const token = await getToken();
-
-      console.log("Clerk token received:", !!token);
-
-      const response = await fetch(
-        "https://revocable-defraud-strum.ngrok-free.dev/api/user/me",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "ngrok-skip-browser-warning": "true",
-          },
-        }
-      );
-
-      console.log("Status:", response.status);
-      console.log("Content-Type:", response.headers.get("content-type"));
-
-      const text = await response.text();
-
-      console.log("Raw backend response:", text);
-
-      // Only try JSON if the server actually returned JSON
-      if (response.headers.get("content-type")?.includes("application/json")) {
-        const data = JSON.parse(text);
-        console.log("Backend response:", data);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  ClerkOutput();
-}, [isSignedIn, getToken]);
 
   return (
     <div className='login'>
@@ -140,7 +96,7 @@ useEffect(() => {
       </form> */}
     <div>
         <Show when="signed-out">
-          <SignInButton />
+          <SignInButton fallbackRedirectUrl="/" />
           <SignUpButton />
         </Show>
         
