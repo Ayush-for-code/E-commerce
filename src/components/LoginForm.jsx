@@ -14,16 +14,27 @@ const LoginForm = () => {
     const [user,setUser] = useState({email:"",password:""});
      const { isLoaded,isSignedIn, getToken } = useAuth();
     const navigate = useNavigate();
-    useEffect(() => {
-  if (!isLoaded) return;
+     useEffect(() => {
+    if (!isLoaded) return;
+
+    console.log("Clerk loaded:", isLoaded);
+    console.log("Clerk signed in:", isSignedIn);
+
+    if (isSignedIn) {
+      console.log("Redirecting to home...");
+      navigate("/", { replace: true });
+    }
+  }, [isLoaded, isSignedIn, navigate]);
+
+    
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
 
   if (isSignedIn) {
-    navigate("/");
+    return <div>Redirecting...</div>;
   }
-}, [isLoaded, isSignedIn, navigate]);
-    if (!isLoaded) {
-  return <div>Loading...</div>;
-}
+
 //    if (isSignedIn) {
 //   return <Navigate to="/" replace />;
 // }
