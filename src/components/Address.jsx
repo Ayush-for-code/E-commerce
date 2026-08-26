@@ -30,12 +30,38 @@ const Address = () => {
   const { address, loading, error } = useSelector((state) => state.addresses);
     const { getToken, isLoaded, isSignedIn } = useAuth();
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
     const token = await getToken();
-    const result = await dispatch(createAddress({addressData:input,token}));
+
+    const result = await dispatch(
+      createAddress({
+        addressData: input,
+        token,
+      })
+    ).unwrap();
+
+    console.log("Address created successfully:", result);
+
     setOpen(false);
-  };
+
+    setInput({
+      name: "",
+      phoneNo: "",
+      addressLine: "",
+      landmark: "",
+      state: "",
+      country: "",
+      city: "",
+      pincode: "",
+    });
+
+  } catch (err) {
+    console.error("Address creation failed:", err);
+  }
+};
   const handleUpdate = async (e)=>{
       e.preventDefault();
  const token = await getToken();
