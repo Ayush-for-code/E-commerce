@@ -14,12 +14,19 @@ const LoginForm = () => {
     const [user,setUser] = useState({email:"",password:""});
      const { isLoaded,isSignedIn, getToken } = useAuth();
     const navigate = useNavigate();
+    useEffect(() => {
+  if (!isLoaded) return;
+
+  if (isSignedIn) {
+    navigate("/");
+  }
+}, [isLoaded, isSignedIn, navigate]);
     if (!isLoaded) {
   return <div>Loading...</div>;
 }
-   if (isSignedIn) {
-  return <Navigate to="/" replace />;
-}
+//    if (isSignedIn) {
+//   return <Navigate to="/" replace />;
+// }
     //  const handleToast = async (e)=>{
     // e.preventDefault()
     // const notify = () =>
@@ -96,7 +103,7 @@ const LoginForm = () => {
       </form> */}
     <div>
         <Show when="signed-out">
-          <SignInButton fallbackRedirectUrl="/" />
+          <SignInButton />
           <SignUpButton />
         </Show>
         
