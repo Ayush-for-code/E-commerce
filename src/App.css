@@ -149,14 +149,14 @@ body button {
 .productName {
   padding: 8px 16px;
 }
-span {
+/* span {
   display: flex;
   align-items: center;
   padding: 4px 16px;
 }
 span svg {
   fill: black;
-}
+} */
 .discription {
   padding: 0 16px;
 }

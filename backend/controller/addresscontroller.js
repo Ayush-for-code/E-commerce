@@ -9,7 +9,7 @@ exports.addAddress = async (req, res) => {
   clerkId: userId
 });
     if(!user){
-      return res.status(404).json({success:false,message:"user not found"});
+      return res.status(200).json({success:false,message:"user not found"});
     }
     
     const mongoUserId = user._id;
