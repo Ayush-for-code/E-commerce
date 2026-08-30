@@ -38,7 +38,7 @@ export const getProduct = createAsyncThunk(
       const res = await fetch(url, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+        
         },
       });
 
