@@ -54,30 +54,40 @@ const Dashboard = () => {
   }
 useEffect(() => {
   const fetchProducts = async () => {
-    console.log("1. useEffect running");
+    console.log("1. Clerk loaded:", isLoaded);
+    console.log("2. Clerk signed in:", isSignedIn);
 
     if (!isLoaded) {
-      console.log("2. Clerk is not loaded");
+      console.log("Clerk is still loading...");
       return;
     }
 
     if (!isSignedIn) {
-      console.log("3. User is NOT signed in");
+      console.log("User is NOT signed in");
       return;
     }
 
-    console.log("4. User is signed in");
+    console.log("User IS signed in");
 
-    const token = await getToken();
-    console.log(token)
+    try {
+      const token = await getToken();
 
-    console.log("5. Clerk token:", token ? "TOKEN RECEIVED" : "NO TOKEN");
+      console.log(
+        "Clerk token:",
+        token ? "TOKEN RECEIVED" : "NO TOKEN"
+      );
 
-    if (!token) return;
+      if (!token) {
+        console.log("No token received");
+        return;
+      }
 
-    const result = await dispatch(getProduct(token));
+      const result = await dispatch(getProduct(token));
 
-    console.log("6. Redux result:", result);
+      console.log("Redux result:", result);
+    } catch (error) {
+      console.error("Authentication/API error:", error);
+    }
   };
 
   fetchProducts();
