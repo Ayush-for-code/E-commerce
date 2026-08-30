@@ -280,7 +280,7 @@ useEffect(() => {
                   <img src={
      item.image[0].startsWith("http")
             ? item.image[0]
-            : `${import.meta.env.VITE_RENDERURI}/uploads/${item.image[0]}`
+            : `${import.meta.env.RENDERURI}/uploads/${item.image[0]}`
   } alt={item.name} />
 
                   <div>

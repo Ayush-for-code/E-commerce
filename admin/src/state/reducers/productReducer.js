@@ -6,7 +6,7 @@ export const addProduct = createAsyncThunk("product/addProduct",
      try{
      
       console.log("productdata",productData)
-       const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/create`,{
+       const res = await fetch(`${import.meta.env.RENDERURI}/api/product/create`,{
         method :"POST",
         headers:{
           "Authorization": `Bearer ${token}`
@@ -31,7 +31,7 @@ export const getProduct = createAsyncThunk(
     try {
       console.log("TOKEN:", token ? "RECEIVED" : "MISSING");
 
-      const url = `${import.meta.env.VITE_RENDERURI}/api/product/get`;
+      const url = `${import.meta.env.RENDERURI}/api/product/get`;
 
       console.log("REQUEST URL:", url);
 
@@ -64,7 +64,7 @@ export const getProduct = createAsyncThunk(
 );
 export const updateProuduct = createAsyncThunk("product/updateProuct", async({id,updateData,token},{rejectWithValue})=>{
   try{
-   const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/update/${id}`,{
+   const res = await fetch(`${import.meta.env.RENDERURI}/api/product/update/${id}`,{
     method:"PUT",
     headers:{
         "Content-type": "application/json",
@@ -85,7 +85,7 @@ export const updateProuduct = createAsyncThunk("product/updateProuct", async({id
  
 export const deleteProduct = createAsyncThunk("product/deleteProduct",async({id,token},{rejectWithValue})=>{
  try{
- const res = await fetch(`${import.meta.env.VITE_RENDERURI}/api/product/remove/${id}`,{
+ const res = await fetch(`${import.meta.env.RENDERURI}/api/product/remove/${id}`,{
     method:"DELETE",
     headers:{
       "Content-Type":"application/json",
