@@ -27,9 +27,10 @@ export const addProduct = createAsyncThunk("product/addProduct",
 
 export const getProduct = createAsyncThunk(
   "product/getProduct",
-  async (token, { rejectWithValue }) => {
+  async ( _,{ rejectWithValue }) => {
+    
     try {
-      console.log("TOKEN:", token ? "RECEIVED" : "MISSING");
+
 
       const url = `${import.meta.env.VITE_RENDERURI}/api/product/get`;
 

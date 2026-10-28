@@ -82,7 +82,7 @@ useEffect(() => {
         return;
       }
 
-      const result = await dispatch(getProduct(token));
+      const result = await dispatch(getProduct());
 
       console.log("Redux result:", result);
     } catch (error) {
